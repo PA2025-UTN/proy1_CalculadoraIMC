@@ -1,14 +1,11 @@
-
-import ImcForm from './ImcForm'
+import ImcCalculator from './ImcCalculator'
 
 function App() {
 
   return (
-    <>
-     <div>
-      <ImcForm />
+    <div className='h-screen w-screen flex flex-col justify-center items-center'>
+      <ImcCalculator />
     </div>
-    </>
   )
 }
 

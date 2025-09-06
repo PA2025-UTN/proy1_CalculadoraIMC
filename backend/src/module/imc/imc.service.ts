@@ -13,11 +13,11 @@ export class ImcService {
     if (imc < 18.5) {
       categoria = 'Bajo peso';
     } else if (imc < 25) {
-      categoria = 'Normal';
+      categoria = 'Peso normal';
     } else if (imc < 30) {
       categoria = 'Sobrepeso';
     } else {
-      categoria = 'Obeso';
+      categoria = 'Obesidad';
     }
 
     return { imc: imcRedondeado, categoria };
