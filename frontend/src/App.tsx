@@ -1,4 +1,4 @@
-import ImcCalculator from './ImcCalculator'
+import ImcCalculator from '@/components/ImcCalculator'
 
 function App() {
 

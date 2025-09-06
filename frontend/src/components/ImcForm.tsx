@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Button } from "./components/ui/button";
-import { Input } from "./components/ui/input";
-import { useCalculator } from "./hooks/useCalculator";
-import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useCalculator } from "@/hooks/useCalculator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Activity, Calculator, Info } from "lucide-react";
-import { Label } from "./components/ui/label";
-import { Badge } from "./components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 
 function ImcForm() {
   const [altura, setAltura] = useState("");

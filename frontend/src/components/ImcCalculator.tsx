@@ -1,5 +1,5 @@
 import { Calculator } from "lucide-react"
-import Categorias from "./components/Categorias"
+import Categorias from "@/components/ImcCategorias"
 import ImcForm from "./ImcForm"
 
 const ImcCalculator = () => {
