@@ -16,15 +16,15 @@ const Categorias = () => {
             </div>
             <div className="text-center p-4 rounded-lg bg-green-100">
               <div className="font-semibold text-green-600">Peso normal</div>
-              <div className="text-sm text-muted-foreground">{`IMC < 25`}</div>
+              <div className="text-sm text-muted-foreground">{`18.5 ≤ IMC < 25`}</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-amber-100">
               <div className="font-semibold text-amber-500">Sobrepeso</div>
-              <div className="text-sm text-muted-foreground">{`IMC < 30`}</div>
+              <div className="text-sm text-muted-foreground">{`25 ≤ IMC < 30`}</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-red-100">
               <div className="font-semibold text-red-500">Obesidad</div>
-              <div className="text-sm text-muted-foreground">{`IMC > 30`}</div>
+              <div className="text-sm text-muted-foreground">{`IMC ≥ 30`}</div>
             </div>
           </div>
         </CardContent>
