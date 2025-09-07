@@ -22,7 +22,7 @@ describe('ImcService', () => {
     const dto: CalcularImcDto = { altura: 1.75, peso: 70 };
     const result = service.calcularImc(dto);
     expect(result.imc).toBeCloseTo(22.86, 2); // Redondeado a 2 decimales
-    expect(result.categoria).toBe('Normal');
+    expect(result.categoria).toBe('Peso normal');
   });
 
   it('should return Bajo peso for IMC < 18.5', () => {
@@ -43,6 +43,6 @@ describe('ImcService', () => {
     const dto: CalcularImcDto = { altura: 1.75, peso: 100 };
     const result = service.calcularImc(dto);
     expect(result.imc).toBeCloseTo(32.65, 2);
-    expect(result.categoria).toBe('Obeso');
+    expect(result.categoria).toBe('Obesidad');
   });
 });
