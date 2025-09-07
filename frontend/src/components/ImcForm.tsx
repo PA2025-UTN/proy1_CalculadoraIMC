@@ -29,17 +29,17 @@ function ImcForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
           {/* Calculator Card */}
-          <Card>
+          <Card className="w-96">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Activity className="w-5 h-5 text-primary" />
+                <Activity className="w-5 h-5 text-blue-400" />
                 Introduce tus datos
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="height" className="text-base font-medium">
-                  Altura (cm)
+                  Altura (m)
                 </Label>
                 <Input
                   type="number"
@@ -52,7 +52,7 @@ function ImcForm() {
 
               <div className="space-y-2">
 
-                <Label htmlFor="weight" className="text-base font-medium">
+                <Label htmlFor="weight" className="font-medium">
                   Peso (kg)
                 </Label>
                 <Input
@@ -63,38 +63,42 @@ function ImcForm() {
                 />
               </div>
 
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" disabled={loading} className="w-full cursor-pointer">
                 {loading ? "Calculando..." : "Calcular"}
               </Button>
             </CardContent>
           </Card>
 
           {/* Result Card */}
-          <Card>
+          <Card className="w-96">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Info className="w-5 h-5 text-primary" />
+                <Info className="w-5 h-5 text-blue-400" />
                 Resultado
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 flex flex-col items-center justify-center">
               {resultado ? (
-                <div className="text-center space-y-4">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Tu IMC es:</p>
-                    <div className="text-4xl font-bold text-primary">
-                      {resultado.imc}
-                    </div>
+                <>
+                  <p className="text-md text-muted-foreground">Tu IMC es:</p>
+                  <div className="text-4xl font-bold">
+                    {resultado.imc}
                   </div>
 
-                  <Badge>
+                  <Badge
+                    className={`text-lg px-4 py-2 ${resultado.categoria === "Bajo peso" ? "bg-neutral-100 text-neutral-600" :
+                      resultado.categoria === "Peso normal" ? "bg-green-100 text-green-600" :
+                        resultado.categoria === "Sobrepeso" ? "bg-amber-100 text-amber-500" : "bg-red-100 text-red-500"
+                      }
+                    `}
+                  >
                     {resultado.categoria}
                   </Badge>
-                </div>
+                </>
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Calculator className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Introducí tu peso y altura para ver el resultado</p>
+                  <p>Introduce tu peso y altura para ver el resultado</p>
                 </div>
               )}
             </CardContent>
@@ -102,19 +106,14 @@ function ImcForm() {
         </div>
       </form>
 
-      {/* {resultado && ( */}
-      {/*   <div className="mt-4 p-3 border rounded-md"> */}
-      {/*     <p> */}
-      {/*       <b>IMC:</b> {resultado.imc.toFixed(2)} */}
-      {/*     </p> */}
-      {/*     <p> */}
-      {/*       <b>Categoría:</b> {resultado.categoria} */}
-      {/*     </p> */}
-      {/*   </div> */}
-      {/* )} */}
+
 
       {error && (
-        <p className="mt-2 text-red-500">{error}</p>
+        <Card className="border-none shadow-none bg-red-100">
+          <CardContent>
+            <p className="mt-2 text-red-500">{error}</p>
+          </CardContent>
+        </Card>
       )}
 
     </div>

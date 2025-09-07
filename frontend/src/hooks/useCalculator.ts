@@ -23,7 +23,7 @@ export const useCalculator = () => {
       setLoading(true);
       setError("");
 
-      const response = await axios.post("http://localhost:3000/imc/calcular", {
+      const response = await axios.post("https://proy1-calculadoraimc-1.onrender.com/imc/calcular", {
         altura,
         peso,
       });
