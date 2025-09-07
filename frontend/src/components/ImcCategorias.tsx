@@ -12,7 +12,7 @@ const Categorias = () => {
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 rounded-lg bg-neutral-100">
               <div className="font-semibold text-neutral-600">Bajo peso</div>
-              <div className="text-sm text-muted-foreground">{`IMC < 18,5`}</div>
+              <div className="text-sm text-muted-foreground">{`IMC < 18.5`}</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-green-100">
               <div className="font-semibold text-green-600">Peso normal</div>

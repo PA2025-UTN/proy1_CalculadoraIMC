@@ -28,7 +28,6 @@ function ImcForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
-          {/* Calculator Card */}
           <Card className="w-96">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -38,7 +37,7 @@ function ImcForm() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="height" className="text-base font-medium">
+                <Label htmlFor="height" className="font-medium">
                   Altura (m)
                 </Label>
                 <Input
@@ -69,7 +68,6 @@ function ImcForm() {
             </CardContent>
           </Card>
 
-          {/* Result Card */}
           <Card className="w-96">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
