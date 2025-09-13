@@ -50,7 +50,12 @@ export function ImcInput({ onSubmit, loading }: ImcInputProps) {
                 <FormItem>
                   <FormLabel>Altura (m)</FormLabel>
                   <FormControl>
-                    <Input type="number" step="0.1" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                    <Input
+                      type="number"
+                      {...field}
+                      step="0.01"
+                      onChange={e => field.onChange(parseFloat(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -64,7 +69,12 @@ export function ImcInput({ onSubmit, loading }: ImcInputProps) {
                 <FormItem>
                   <FormLabel>Peso (kg)</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                    <Input
+                      type="number"
+                      {...field}
+                      step="0.01"
+                      onChange={e => field.onChange(parseFloat(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
