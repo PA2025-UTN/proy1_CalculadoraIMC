@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useCalculator } from "@/hooks/useCalculator"
 import { ImcInput } from "./ImcInput"
 import { ImcResultado } from "./ImcResultado"
-import { ImcFormValues } from "../lib/imcSchema"
+import { ImcFormValues } from "@/lib/imcSchema"
 import { TriangleAlert } from "lucide-react"
 
 function ImcForm() {

@@ -11,7 +11,7 @@ export const useCalculator = () => {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const URL = "http://localhost:3000/im/calcular"
+  const URL = "http://localhost:3000/imc/calcular"
 
   const calcularImc = async (altura: number, peso: number) => {
     if (altura <= 0 || peso <= 0) {
