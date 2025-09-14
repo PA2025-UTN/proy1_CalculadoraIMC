@@ -1,14 +1,19 @@
-import { Injectable } from "@nestjs/common";
-import { CalcularImcDto } from "./dto/calcular-imc-dto";
-
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Imc } from './entities/imc.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ImcService {
-  calcularImc(data: CalcularImcDto): { imc: number; categoria: string } {
-    const { altura, peso } = data;
-    const imc = peso / (altura * altura);
-    const imcRedondeado = Math.round(imc * 100) / 100; // Dos decimales
+  constructor(
+    @InjectRepository(Imc)
+    private readonly imcRepo: Repository<Imc>,
+    private readonly usersService: UsersService,
+  ) { }
 
+  async calcularIMC(userId: number, peso: number, altura: number) {
+    const imc = peso / (altura * altura);
     let categoria: string;
     if (imc < 18.5) {
       categoria = 'Bajo peso';
@@ -20,7 +25,28 @@ export class ImcService {
       categoria = 'Obesidad';
     }
 
-    return { imc: imcRedondeado, categoria };
+    const user = await this.usersService.findById(userId);
+
+    if (!user) {
+      throw new Error(`Usuario ${userId} no encontrado`);
+    }
+
+    const resultado = this.imcRepo.create({
+      peso,
+      altura,
+      imc,
+      categoria,
+      user,
+    });
+
+    return this.imcRepo.save(resultado);
+  }
+
+  async obtenerHistorial(userId: number) {
+    return this.imcRepo.find({
+      where: { user: { id: userId } },
+      order: { fecha: 'DESC' },
+    });
   }
 }
 
