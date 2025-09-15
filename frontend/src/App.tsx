@@ -1,15 +1,23 @@
-import ImcCalculator from '@/components/ImcCalculator'
-import Header from './components/Header'
+import ImcCalculator from './components/ImcCalculator'
+import Welcome from './components/Welcome'
+import { Route, Routes } from 'react-router'
+import ProtectedRoute from './ProtectedRoute'
+import NotFound from './components/NotFound'
 
 function App() {
 
   return (
-    <div className='py-4 min-h-screen w-screen flex flex-col justify-center items-center bg-slate-50'>
-      <div className='absolute top-0 w-full'>
-        <Header />
-      </div>
-      <ImcCalculator />
-    </div>
+    <Routes>
+      <Route path="/" element={<Welcome />} />
+      <Route
+        path="/calculadora"
+        element={
+          <ProtectedRoute>
+            <ImcCalculator />
+          </ProtectedRoute>
+        } />
+      <Route path='*' element={<NotFound />} />
+    </Routes>
   )
 }
 

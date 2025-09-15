@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { ImcFormValues, imcSchema } from "@/lib/imcSchema"
+import { ImcFormValues, imcSchema } from "./utils/imcSchema"
 
 interface ImcInputProps {
   onSubmit: (values: ImcFormValues) => void
