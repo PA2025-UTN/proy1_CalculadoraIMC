@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import axios from "axios"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-import { BarChart3, ChartPie, History, Trash2 } from "lucide-react"
+import { BarChart3, ChartPie, History, RefreshCw } from "lucide-react"
 import { Button } from "../ui/button"
 import { ScrollArea } from "../ui/scroll-area"
 import { Badge } from "../ui/badge"
@@ -22,25 +22,26 @@ const ImcHistorial = () => {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    const getHistorial = async () => {
-      if (!token) return
-      setLoading(true)
-      setError(null)
-      try {
-        const res = await axios.get<Historial[]>(`${import.meta.env.VITE_BACK_URL}/imc/historial`, {
-          headers: {
-            Authorization: token,
-          },
-        })
-        setHistorial(res.data)
-      } catch (err: any) {
-        setError(err.response?.data?.message || "Error al obtener historial")
-      } finally {
-        setLoading(false)
-      }
-    }
 
+  const getHistorial = async () => {
+    if (!token) return
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await axios.get<Historial[]>(`${import.meta.env.VITE_BACK_URL}/imc/historial`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      setHistorial(res.data)
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Error al obtener historial")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
     getHistorial()
   }, [token])
 
@@ -78,16 +79,17 @@ const ImcHistorial = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="cursor-pointer text-muted-foreground hover:text-destructive"
-                    disabled
+                    className="cursor-pointer text-muted-foreground hover:text-primary transition-all"
+                    onClick={getHistorial}
                   >
-                    <Trash2 className="w-4 h-4 mr-1" />
-                    Limpiar
+                    <RefreshCw className="w-4 h-4" />
                   </Button>
                 )}
               </div>
             </CardHeader>
             <CardContent>
+              {loading && <p>Cargando...</p>}
+              {error && <p>{error}</p>}
               {historial.length > 0 ? (
                 <ScrollArea className="h-80 w-full">
                   <div className="space-y-3">
@@ -98,7 +100,7 @@ const ImcHistorial = () => {
                             <p className="text-lg">IMC: </p>
                             <div className="text-lg font-semibold text-primary">{imc.imc}</div>
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-sm">
                             {new Date(imc.fecha).toLocaleString("es-AR")}
                           </div>
                         </div>
