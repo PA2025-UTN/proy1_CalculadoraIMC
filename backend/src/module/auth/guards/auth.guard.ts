@@ -24,14 +24,14 @@ export class AuthGuard implements CanActivate {
       const token = request.headers.authorization;
 
       if (token == null) {
-        throw new UnauthorizedException('No token provided');
+        throw new UnauthorizedException('Token no enviado');
       }
 
       const payload = this.authService.getPayload(token);
       const user = await this.usersService.findByEmail(payload.email);
 
       if (!user) {
-        throw new UnauthorizedException('User not found');
+        throw new UnauthorizedException('Usuario no encontrado');
       }
 
       request.user = user;

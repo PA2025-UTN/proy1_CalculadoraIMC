@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ImcModule } from './module/imc/imc.module';
 import { AuthModule } from './module/auth/auth.module';
-import { HistorialModule } from './module/historial/historial.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './module/users/users.module';
@@ -24,7 +23,6 @@ import { UsersModule } from './module/users/users.module';
     }),
     ImcModule,
     AuthModule,
-    HistorialModule,
     UsersModule
   ],
 })

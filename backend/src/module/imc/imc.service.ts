@@ -14,6 +14,7 @@ export class ImcService {
 
   async calcularIMC(userId: number, peso: number, altura: number) {
     const imc = peso / (altura * altura);
+    const imcRedondeado = Math.round(imc * 100) / 100;
     let categoria: string;
     if (imc < 18.5) {
       categoria = 'Bajo peso';
@@ -34,7 +35,7 @@ export class ImcService {
     const resultado = this.imcRepo.create({
       peso,
       altura,
-      imc,
+      imc: imcRedondeado,
       categoria,
       user,
     });

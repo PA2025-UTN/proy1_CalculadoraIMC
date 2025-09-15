@@ -16,7 +16,7 @@ export class AuthService {
     const userExists = await this.usersService.findByEmail(body.email);
 
     if (userExists) {
-      throw new HttpException('User already exists', 400);
+      throw new HttpException('El usuario ya existe', 400);
     }
 
     const user = new User();
@@ -32,12 +32,12 @@ export class AuthService {
   async login(body: LoginDTO) {
     const user = await this.usersService.findByEmailWithPassword(body.email);
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException('Usuario no encontrado');
     }
 
     const compareResult = compareSync(body.password, user.password);
     if (!compareResult) {
-      throw new UnauthorizedException('Wrong password');
+      throw new UnauthorizedException('Contraseña incorrecta');
     }
 
     return {
