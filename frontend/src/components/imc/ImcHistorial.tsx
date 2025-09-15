@@ -75,16 +75,14 @@ const ImcHistorial = () => {
                   <History className="w-5 h-5 text-primary" />
                   Historial de cálculos
                 </CardTitle>
-                {historial.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer text-muted-foreground hover:text-primary transition-all"
-                    onClick={getHistorial}
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                  </Button>
-                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="cursor-pointer text-muted-foreground hover:text-primary transition-all"
+                  onClick={getHistorial}
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
