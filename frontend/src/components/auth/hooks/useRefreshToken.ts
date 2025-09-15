@@ -7,7 +7,7 @@ export const useRefreshToken = () => {
       const refreshToken = localStorage.getItem("refreshToken")
       if (!refreshToken) return null
 
-      const { data } = await axios.get(`${process.env.VITE_BACK_URL}/auth/refresh-token`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_BACK_URL}/auth/refresh-token`, {
         headers: {
           "refresh-token": refreshToken,
         },
