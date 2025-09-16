@@ -3,7 +3,8 @@ import { z } from "zod";
 export const registerSchema = z.object({
   usuario: z
     .string({ error: "El usuario es obligatorio" })
-    .min(1, "El usuario es obligatorio"),
+    .min(1, "El usuario es obligatorio")
+    .max(30, "Usuario demasiado largo"),
   email: z
     .string({ error: "El email es obligatorio" })
     .min(1, "El email es obligatorio")
