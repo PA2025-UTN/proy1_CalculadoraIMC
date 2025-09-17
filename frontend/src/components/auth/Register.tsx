@@ -35,9 +35,9 @@ const Register = () => {
     },
   })
 
-  const onSubmit = (values: RegisterFormValues) => {
-    registerUser(values.usuario, values.email, values.password)
-    if (!error) {
+  const onSubmit = async (values: RegisterFormValues) => {
+    const success = await registerUser(values.usuario, values.email, values.password)
+    if (success) {
       form.reset()
     }
   }
@@ -124,6 +124,7 @@ const Register = () => {
                       />
                       <Button
                         className="cursor-pointer"
+                        type="button"
                         onClick={() => setShowPassword(prev => !prev)}
                       >
                         {showPassword ? <EyeOff /> : <Eye />}

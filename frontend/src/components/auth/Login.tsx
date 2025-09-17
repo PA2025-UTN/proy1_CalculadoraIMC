@@ -24,9 +24,9 @@ const Login = () => {
     },
   })
 
-  const onSubmit = (values: LoginFormValues) => {
-    login(values.email, values.password)
-    if (!error) {
+  const onSubmit = async (values: LoginFormValues) => {
+    const success = await login(values.email, values.password)
+    if (success) {
       form.reset()
     }
   }
@@ -93,6 +93,7 @@ const Login = () => {
                       />
                       <Button
                         className="cursor-pointer"
+                        type="button"
                         onClick={() => setShowPassword(prev => !prev)}
                       >
                         {showPassword ? <EyeOff /> : <Eye />}
