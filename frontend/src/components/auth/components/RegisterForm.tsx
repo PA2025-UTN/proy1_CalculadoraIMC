@@ -35,7 +35,6 @@ const RegisterForm = ({ open }: { open?: () => void }) => {
     )
     if (success) {
       form.reset()
-      open?.()
     }
   }
 
