@@ -24,7 +24,7 @@ import { Toaster } from "sonner"
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const { register: registerUser, loading, error } = useAuth()
+  const { register: registerUser, loading, error, setError } = useAuth()
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -35,9 +35,11 @@ const Register = () => {
     },
   })
 
-  const onSubmit = (values: RegisterFormValues) => {
-    registerUser(values.usuario, values.email, values.password)
-    form.reset()
+  const onSubmit = async (values: RegisterFormValues) => {
+    const success = await registerUser(values.usuario, values.email, values.password)
+    if (success) {
+      form.reset()
+    }
   }
 
   return (
@@ -45,6 +47,7 @@ const Register = () => {
       onOpenChange={(isOpen) => {
         if (!isOpen) {
           form.reset()
+          setError(null)
         }
       }}
     >
@@ -73,6 +76,7 @@ const Register = () => {
                   <FormControl>
                     <Input
                       type="text"
+                      {...field}
                       onChange={e => field.onChange(e.target.value)}
                     />
                   </FormControl>
@@ -90,6 +94,7 @@ const Register = () => {
                   <FormControl>
                     <Input
                       type="email"
+                      {...field}
                       placeholder="ejemplo@gmail.com"
                       onChange={e => field.onChange(e.target.value)}
                     />
@@ -109,6 +114,7 @@ const Register = () => {
                     <div className="flex gap-1">
                       <Input
                         type={showPassword ? "text" : "password"}
+                        {...field}
                         placeholder="••••••"
                         onChange={e => field.onChange(e.target.value)}
                         className={cn(
@@ -118,6 +124,7 @@ const Register = () => {
                       />
                       <Button
                         className="cursor-pointer"
+                        type="button"
                         onClick={() => setShowPassword(prev => !prev)}
                       >
                         {showPassword ? <EyeOff /> : <Eye />}

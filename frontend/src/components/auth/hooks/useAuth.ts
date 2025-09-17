@@ -14,7 +14,7 @@ export const useAuth = () => {
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true)
     setError(null)
 
@@ -27,22 +27,26 @@ export const useAuth = () => {
       localStorage.setItem("accessToken", data.accessToken)
       localStorage.setItem("refreshToken", data.refreshToken)
       navigate("/calculadora")
+      return true
     } catch (err: any) {
       setError(err.response?.data?.message || "Error en login")
+      return false
     } finally {
       setLoading(false)
     }
   }
 
-  const register = async (usuario: string, email: string, password: string) => {
+  const register = async (usuario: string, email: string, password: string): Promise<boolean> => {
     setLoading(true)
     setError(null)
 
     try {
       await axios.post(`${import.meta.env.VITE_BACK_URL}/auth/register`, { usuario, email, password })
       toast.success('Usuario registrado correctamente')
+      return true
     } catch (err: any) {
       setError(err.response?.data?.message || "Error en registro")
+      return false
     } finally {
       setLoading(false)
     }
@@ -59,6 +63,7 @@ export const useAuth = () => {
     tokens,
     loading,
     error,
+    setError,
     login,
     register,
     logout,

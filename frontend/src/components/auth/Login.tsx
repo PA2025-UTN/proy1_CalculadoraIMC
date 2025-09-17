@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const { login, loading, error } = useAuth()
+  const { login, loading, error, setError } = useAuth()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -24,8 +24,11 @@ const Login = () => {
     },
   })
 
-  const onSubmit = (values: LoginFormValues) => {
-    login(values.email, values.password)
+  const onSubmit = async (values: LoginFormValues) => {
+    const success = await login(values.email, values.password)
+    if (success) {
+      form.reset()
+    }
   }
 
   return (
@@ -33,6 +36,7 @@ const Login = () => {
       onOpenChange={(isOpen) => {
         if (!isOpen) {
           form.reset()
+          setError(null)
         }
       }}
     >
@@ -59,6 +63,7 @@ const Login = () => {
                   <FormControl>
                     <Input
                       type="email"
+                      {...field}
                       placeholder="ejemplo@gmail.com"
                       onChange={e => field.onChange(e.target.value)}
                     />
@@ -78,6 +83,7 @@ const Login = () => {
                     <div className="flex gap-1">
                       <Input
                         type={showPassword ? "text" : "password"}
+                        {...field}
                         placeholder="••••••"
                         onChange={e => field.onChange(e.target.value)}
                         className={cn(
@@ -87,6 +93,7 @@ const Login = () => {
                       />
                       <Button
                         className="cursor-pointer"
+                        type="button"
                         onClick={() => setShowPassword(prev => !prev)}
                       >
                         {showPassword ? <EyeOff /> : <Eye />}
