@@ -59,6 +59,7 @@ export const useAuth = () => {
     tokens,
     loading,
     error,
+    setError,
     login,
     register,
     logout,

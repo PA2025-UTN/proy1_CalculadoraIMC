@@ -24,7 +24,7 @@ import { Toaster } from "sonner"
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const { register: registerUser, loading, error } = useAuth()
+  const { register: registerUser, loading, error, setError } = useAuth()
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -45,6 +45,7 @@ const Register = () => {
       onOpenChange={(isOpen) => {
         if (!isOpen) {
           form.reset()
+          setError(null)
         }
       }}
     >
@@ -73,6 +74,7 @@ const Register = () => {
                   <FormControl>
                     <Input
                       type="text"
+                      {...field}
                       onChange={e => field.onChange(e.target.value)}
                     />
                   </FormControl>
@@ -90,6 +92,7 @@ const Register = () => {
                   <FormControl>
                     <Input
                       type="email"
+                      {...field}
                       placeholder="ejemplo@gmail.com"
                       onChange={e => field.onChange(e.target.value)}
                     />
@@ -109,6 +112,7 @@ const Register = () => {
                     <div className="flex gap-1">
                       <Input
                         type={showPassword ? "text" : "password"}
+                        {...field}
                         placeholder="••••••"
                         onChange={e => field.onChange(e.target.value)}
                         className={cn(
