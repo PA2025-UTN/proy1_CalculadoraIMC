@@ -37,7 +37,9 @@ const Register = () => {
 
   const onSubmit = (values: RegisterFormValues) => {
     registerUser(values.usuario, values.email, values.password)
-    form.reset()
+    if (!error) {
+      form.reset()
+    }
   }
 
   return (

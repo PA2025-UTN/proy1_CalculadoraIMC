@@ -26,6 +26,9 @@ const Login = () => {
 
   const onSubmit = (values: LoginFormValues) => {
     login(values.email, values.password)
+    if (!error) {
+      form.reset()
+    }
   }
 
   return (

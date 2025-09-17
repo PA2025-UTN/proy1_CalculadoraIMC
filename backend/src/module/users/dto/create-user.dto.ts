@@ -1,7 +1,8 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'El nombre de usuario es obligatorio' })
+  @MaxLength(30, { message: 'Usuario demasiado largo' })
   usuario: string;
 
   @IsEmail({}, { message: 'Debe ser un email válido' })
