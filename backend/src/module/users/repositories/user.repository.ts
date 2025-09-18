@@ -9,27 +9,27 @@ import { IUserRepository } from './user.repository.interface'
 export class UserRepository implements IUserRepository {
   constructor(
     @InjectRepository(User)
-    private readonly ormRepo: Repository<User>,
+    private readonly repository: Repository<User>,
   ) { }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    return this.ormRepo.save(createUserDto)
+    return this.repository.save(createUserDto)
   }
 
   async getUsers(): Promise<User[]> {
-    return this.ormRepo.find()
+    return this.repository.find()
   }
 
   async findById(id: number): Promise<User | null> {
-    return this.ormRepo.findOne({ where: { id } })
+    return this.repository.findOne({ where: { id } })
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.ormRepo.findOneBy({ email })
+    return this.repository.findOneBy({ email })
   }
 
   async findByEmailWithPassword(email: string): Promise<User | null> {
-    return this.ormRepo.findOne({
+    return this.repository.findOne({
       where: { email },
       select: ['id', 'usuario', 'email', 'password'],
     })

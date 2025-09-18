@@ -1,91 +1,87 @@
 import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
 import { RegisterDTO } from './dto/register.dto';
-import { compareSync, hashSync } from 'bcrypt';
 import { LoginDTO } from './dto/login.dto';
-import { User } from '../users/entities/user.entity';
+import { compare, hash } from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { config } from 'src/common/config/JwtConfig';
 import { Payload } from 'src/common/interfaces/payload';
+
+type TokenPayload = Omit<Payload, 'iat' | 'exp'>;
 
 @Injectable()
 export class AuthService {
   constructor(private usersService: UsersService) { }
 
+  /** Registrar usuario */
   async register(body: RegisterDTO) {
     const userExists = await this.usersService.findByEmail(body.email);
-
     if (userExists) {
       throw new HttpException('El usuario ya existe', 400);
     }
 
-    const user = new User();
-    Object.assign(user, body);
+    const hashedPassword = await hash(body.password, 10);
 
-    user.password = hashSync(user.password, 10);
-
-    await this.usersService.createUser(user);
-    return user;
-
+    return this.usersService.createUser({
+      usuario: body.usuario,
+      email: body.email,
+      password: hashedPassword,
+    });
   }
 
+  /** Login */
   async login(body: LoginDTO) {
     const user = await this.usersService.findByEmailWithPassword(body.email);
     if (!user) {
       throw new UnauthorizedException('Usuario no encontrado');
     }
 
-    const compareResult = compareSync(body.password, user.password);
-    if (!compareResult) {
+    const isPasswordValid = await compare(body.password, user.password);
+    if (!isPasswordValid) {
       throw new UnauthorizedException('Contraseña incorrecta');
     }
 
+    const payload: TokenPayload = { email: user.email };
     return {
-      accessToken: this.generateToken({ email: user.email }, 'auth'),
-      refreshToken: this.generateToken({ email: user.email }, 'refresh'),
+      accessToken: this.generateToken(payload, 'auth'),
+      refreshToken: this.generateToken(payload, 'refresh'),
     };
   }
 
-  generateToken(
-    payload: { email: string },
-    type: 'refresh' | 'auth' = 'auth',
-  ): string {
+  /** Genera token */
+  generateToken(payload: TokenPayload, type: 'auth' | 'refresh' = 'auth'): string {
     return sign(payload, config[type].secret, {
       expiresIn: config[type].expiresIn,
     });
   }
 
+  /** Refresh token */
   refreshToken(refreshToken: string) {
     try {
-      const payload = verify(
-        refreshToken,
-        config.refresh.secret,
-      ) as Payload;
-
+      const payload = verify(refreshToken, config.refresh.secret) as Payload;
       const currentTime = Math.floor(Date.now() / 1000);
       const timeToExpire = (payload.exp - currentTime) / 60;
 
+      const tokenPayload: TokenPayload = { email: payload.email };
+
       if (timeToExpire < 20) {
         return {
-          accessToken: this.generateToken({ email: payload.email }),
-          refreshToken: this.generateToken({ email: payload.email }, 'refresh'),
+          accessToken: this.generateToken(tokenPayload, 'auth'),
+          refreshToken: this.generateToken(tokenPayload, 'refresh'),
         };
       }
 
       return {
-        accessToken: this.generateToken({ email: payload.email }),
+        accessToken: this.generateToken(tokenPayload, 'auth'),
       };
     } catch (error) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Token inválido o expirado');
     }
   }
 
-  getPayload(
-    token: string,
-    type: 'refresh' | 'auth' = 'auth'
-  ) {
+  /** Obtener payload de un token */
+  getPayload(token: string, type: 'auth' | 'refresh' = 'auth'): Payload {
     return verify(token, config[type].secret) as Payload;
   }
-
 }
 
