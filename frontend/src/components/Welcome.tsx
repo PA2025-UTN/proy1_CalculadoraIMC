@@ -2,20 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Calculator, TrendingUp, Activity } from "lucide-react";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
 
 const Welcome = () => {
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      navigate("/calculadora");
-    }
-  }, [navigate]);
-
   return (
     <div className="min-h-screen flex justify-center p-4 pt-32 bg-slate-50">
       <div className="max-w-4xl mx-auto text-center space-y-8">
