@@ -1,5 +1,5 @@
-import { ImcInput } from "./ImcInput"
-import { ImcResultado } from "./ImcResultado"
+import { ImcInput } from "./Input"
+import { ImcResultado } from "./Resultado"
 import { ImcFormValues } from "./utils/imcSchema"
 import { useCalculator } from "./hooks/useCalculator"
 import { ErrorCard } from "../ErrorCard"
