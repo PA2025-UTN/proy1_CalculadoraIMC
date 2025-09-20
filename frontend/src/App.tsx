@@ -1,15 +1,29 @@
-import ImcCalculator from '@/components/ImcCalculator'
-import Header from './components/Header'
+import ImcCalculator from './components/imc/Calculator'
+import Welcome from './components/Welcome'
+import { Route, Routes } from 'react-router'
+import ProtectedRoute from './utils/ProtectedRoute'
+import NotFound from './components/NotFound'
+import PublicRoute from './utils/PublicRoute'
+import ImcLayout from './components/imc/Layout'
+import ImcHistorial from './components/imc/Historial'
+import ImcEstadisticas from './components/imc/Estadisticas'
 
 function App() {
 
   return (
-    <div className='py-4 min-h-screen w-screen flex flex-col justify-center items-center bg-slate-50'>
-      <div className='absolute top-0 w-full'>
-        <Header />
-      </div>
-      <ImcCalculator />
-    </div>
+    <Routes>
+      <Route element={<PublicRoute />}>
+        <Route path="/" element={<Welcome />} />
+      </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route element={<ImcLayout />}>
+          <Route path="/calculadora" element={<ImcCalculator />} />
+          <Route path="/historial" element={<ImcHistorial />} />
+          <Route path="/estadisticas" element={<ImcEstadisticas />} />
+        </Route>
+      </Route>
+      <Route path='*' element={<NotFound />} />
+    </Routes>
   )
 }
 

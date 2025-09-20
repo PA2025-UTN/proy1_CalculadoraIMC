@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-const Categorias = () => {
+const ImcCategorias = () => {
   return (
     <div>
       <Card>
@@ -33,4 +33,4 @@ const Categorias = () => {
   )
 }
 
-export default Categorias
+export default ImcCategorias

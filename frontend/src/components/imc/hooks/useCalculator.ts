@@ -11,8 +11,6 @@ export const useCalculator = () => {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const URL = "http://localhost:3000/imc/calcular"
-
   const calcularImc = async (altura: number, peso: number) => {
     if (altura <= 0 || peso <= 0) {
       setError("Por favor, ingresa valores válidos (positivos).")
@@ -24,7 +22,16 @@ export const useCalculator = () => {
       setLoading(true)
       setError("")
 
-      const response = await axios.post(URL, { altura, peso })
+      const token = localStorage.getItem("accessToken")
+
+      const response = await axios.post(`${import.meta.env.VITE_BACK_URL}/imc/calcular`,
+        { altura, peso },
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      )
       setResultado(response.data)
     } catch (err: any) {
       setError("Error al calcular el IMC. Verifica si el backend está corriendo.");
