@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -9,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users.module';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { UserRepository } from './repositories/user.repository';
 dotenv.config();
 
 jest.setTimeout(20000);
@@ -73,46 +73,49 @@ describe('UsersService', () => {
 
 describe('UsersService', () => {
   let service: UsersService;
-  let userRepository: Repository<User>;
+  let userRepository: jest.Mocked<UserRepository>;
+
+  const mockUserRepository: Partial<UserRepository> = {
+    createUser: jest.fn(),
+    getUsers: jest.fn(),
+    findById: jest.fn(),
+    findByEmail: jest.fn(),
+    findByEmailWithPassword: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
         {
-          provide: getRepositoryToken(User),
-          useValue: {
-            create: jest.fn(),
-            save: jest.fn(),
-            find: jest.fn(),
-            findOneBy: jest.fn(),
-          },
+          provide: UserRepository,
+          useValue: mockUserRepository,
         },
       ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
-    userRepository = module.get<Repository<User>>(getRepositoryToken(User));
+    userRepository = module.get(UserRepository);
     
   });
 
   it('Debería crear un usuario', async () => {
     const dto: CreateUserDto = { usuario: 'testUser', email: 'test@example.com', password: 'testPassword' };
-    jest.spyOn(userRepository, 'save').mockResolvedValue({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
+    userRepository.createUser.mockResolvedValue({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
 
     const result = await service.createUser(dto);
 
     expect(result).toEqual({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
-    expect(userRepository.save).toHaveBeenCalledWith(dto);
+    expect(userRepository.createUser).toHaveBeenCalledWith(dto);
   });
 
   it('Debería encontrar un usuario por email', async () => {
     const email = 'test@example.com';
-    jest.spyOn(userRepository, 'findOneBy').mockResolvedValue({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
+    userRepository.findByEmail.mockResolvedValue({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
 
     const result = await service.findByEmail(email);
 
     expect(result).toEqual({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
-    expect(userRepository.findOneBy).toHaveBeenCalledWith({ email });
+    expect(userRepository.findByEmail).toHaveBeenCalledWith(email) ;
   });
 });
