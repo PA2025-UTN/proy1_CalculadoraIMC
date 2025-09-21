@@ -25,7 +25,12 @@ describe('AuthGuard', () => {
   const createMockContext = (token?: string, user?: Partial<User>): ExecutionContext => {
       return {
           switchToHttp: () => ({
-          getRequest: () => ({headers: { authorization: 'Bearer mock-token',}})}),
+              getRequest: () => ({
+                  headers: {
+                      authorization: token ? `Bearer ${token}` : undefined,
+                  }
+              })
+          }),
       } as ExecutionContext;
   }
   it('Debería permitir acceso si el token es válido y el usuario existe', async () => {
