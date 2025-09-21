@@ -51,7 +51,7 @@ describe('AuthGuard', () => {
   });
 
   it('Debería lanzar UnauthorizedException si el usuario no existe', async () => {
-  (mockUserService.findByEmail as jest.Mock).mockReturnValue(undefined);
+  (mockUserService.findByEmail as jest.Mock).mockResolvedValue(undefined);
 
   const context = createMockContext();
   await expect(guard.canActivate(context)).rejects.toThrow('Usuario no encontrado');
