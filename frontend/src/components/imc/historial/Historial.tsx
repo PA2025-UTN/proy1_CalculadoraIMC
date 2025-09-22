@@ -44,7 +44,9 @@ const ImcHistorial = () => {
             </Button>
           </div>
         </div>
-        {showFilters && <Filters onSubmit={fetchHistorial} />}
+        <div className={showFilters ? "block" : "hidden"}>
+          <Filters onSubmit={fetchHistorial} />
+        </div>
       </CardHeader>
       <CardContent>
         {loading && <div className="w-full mb-2 flex justify-center"><Spinner size={25} /></div>}
