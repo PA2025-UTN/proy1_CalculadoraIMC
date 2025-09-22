@@ -23,7 +23,7 @@ export function useHistorialQuery() {
       params.append("categoria", "all");
     }
 
-    return `/imc/historial?${params.toString()}`;
+    return params.toString() ? `?${params.toString()}` : "";
   };
 
   return { buildQuery };

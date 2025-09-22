@@ -1,50 +1,21 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
-import axios from "axios"
 import { Filter, History, RefreshCw } from "lucide-react"
 import { Button } from "../../ui/button"
 import { ScrollArea } from "../../ui/scroll-area"
 import CardHistorial from "./components/CardHistorial"
 import Filters from "./components/Filters"
-
-interface Historial {
-  id: number
-  peso: number
-  altura: number
-  imc: number
-  categoria: string
-  fecha: string
-}
+import { useHistorial } from "./hooks/useHistorial"
+import Spinner from "@/components/ui/spinner"
+import { ErrorCard } from "@/components/ErrorCard"
 
 const ImcHistorial = () => {
-  const token = localStorage.getItem("accessToken")
-  const [historial, setHistorial] = useState<Historial[]>([])
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const { data: historial, loading, error, fetchHistorial } = useHistorial()
   const [showFilters, setShowFilters] = useState(false)
 
-
-  const getHistorial = async () => {
-    if (!token) return
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await axios.get<Historial[]>(`${import.meta.env.VITE_BACK_URL}/imc/historial`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      setHistorial(res.data)
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Error al obtener historial")
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
-    getHistorial()
-  }, [token])
+    fetchHistorial()
+  }, [fetchHistorial])
 
   return (
     <Card className="w-[40vw]">
@@ -67,19 +38,19 @@ const ImcHistorial = () => {
               variant="outline"
               size="sm"
               className="cursor-pointer text-muted-foreground hover:text-primary transition-all"
-              onClick={getHistorial}
+              onClick={() => fetchHistorial()}
             >
               <RefreshCw className="w-4 h-4" />
             </Button>
           </div>
         </div>
-        {showFilters && <Filters />}
+        {showFilters && <Filters onSubmit={fetchHistorial} />}
       </CardHeader>
       <CardContent>
-        {loading && <p>Cargando...</p>}
-        {error && <p>{error}</p>}
+        {loading && <div className="w-full mb-2 flex justify-center"><Spinner size={25} /></div>}
+        {error && <ErrorCard message={error} />}
         {historial.length > 0 ? (
-          <ScrollArea className={`${showFilters ? "h-[71vh]" : "h-[78vh]"} w-full`}>
+          <ScrollArea className={`${showFilters ? "h-[65vh]" : "h-[78vh]"} w-full`}>
             <div className="space-y-3">
               {historial.map((imc, i) => (
                 <CardHistorial
@@ -106,3 +77,4 @@ const ImcHistorial = () => {
 }
 
 export default ImcHistorial
+

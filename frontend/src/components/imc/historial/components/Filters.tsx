@@ -1,28 +1,31 @@
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { FechaField } from "./FechaField";
-import { CategoriasField } from "./CategoriasField";
-import { OrdenField } from "./OrdenField";
-import { useHistorialQuery } from "../hooks/useHistorialQuery";
-import { FiltrosForm } from "../types/filters-types";
-import { CheckIcon } from "lucide-react";
+import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
+import { FechaField } from "./FechaField"
+import { CategoriasField } from "./CategoriasField"
+import { OrdenField } from "./OrdenField"
+import { useHistorialQuery } from "../hooks/useHistorialQuery"
+import { FiltrosForm } from "../types/filters-types"
+import { CheckIcon } from "lucide-react"
 
-export default function HistorialFilters() {
+interface Props {
+  onSubmit: (query: string) => void
+}
+
+export default function HistorialFilters({ onSubmit }: Props) {
   const { control, handleSubmit, reset } = useForm<FiltrosForm>({
     defaultValues: {
       fecha: undefined,
       categorias: "all",
       orden: "fecha-desc",
     },
-  });
+  })
 
-  const { buildQuery } = useHistorialQuery();
+  const { buildQuery } = useHistorialQuery()
 
   const onFormSubmit = (data: FiltrosForm) => {
-    const query = buildQuery(data);
-    console.log("GET:", query);
-    // fetch acá
-  };
+    const query = buildQuery(data)
+    onSubmit(query)
+  }
 
   return (
     <form
@@ -45,14 +48,11 @@ export default function HistorialFilters() {
         >
           Limpiar filtros
         </Button>
-        <Button
-          className="cursor-pointer"
-          size="sm"
-          type="submit"
-        >
+        <Button className="cursor-pointer" size="sm" type="submit">
           <CheckIcon />
         </Button>
       </div>
     </form>
-  );
+  )
 }
+
