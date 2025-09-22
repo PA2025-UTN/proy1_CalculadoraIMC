@@ -1,8 +1,8 @@
+import { ErrorCard } from "@/components/ErrorCard"
+import { ImcFormValues } from "../../utils/imcSchema"
+import { useCalculator } from "../hooks/useCalculator"
 import { ImcInput } from "./Input"
 import { ImcResultado } from "./Resultado"
-import { ImcFormValues } from "./utils/imcSchema"
-import { useCalculator } from "./hooks/useCalculator"
-import { ErrorCard } from "../ErrorCard"
 
 function ImcForm() {
   const { resultado, error, loading, calcularImc } = useCalculator()

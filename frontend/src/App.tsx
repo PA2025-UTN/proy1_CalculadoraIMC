@@ -1,12 +1,12 @@
-import ImcCalculator from './components/imc/Calculator'
-import Welcome from './components/Welcome'
 import { Route, Routes } from 'react-router'
-import ProtectedRoute from './utils/ProtectedRoute'
-import NotFound from './components/NotFound'
-import PublicRoute from './utils/PublicRoute'
-import ImcLayout from './components/imc/Layout'
-import ImcHistorial from './components/imc/historial/Historial'
+import ImcCalculator from './components/imc/calculadora/Calculator'
 import ImcEstadisticas from './components/imc/estadisticas/Estadisticas'
+import ImcHistorial from './components/imc/historial/Historial'
+import ImcLayout from './components/imc/Layout'
+import NotFound from './components/NotFound'
+import Welcome from './components/Welcome'
+import ProtectedRoute from './utils/ProtectedRoute'
+import PublicRoute from './utils/PublicRoute'
 
 function App() {
 
