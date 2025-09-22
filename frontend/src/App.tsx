@@ -5,7 +5,7 @@ import ProtectedRoute from './utils/ProtectedRoute'
 import NotFound from './components/NotFound'
 import PublicRoute from './utils/PublicRoute'
 import ImcLayout from './components/imc/Layout'
-import ImcHistorial from './components/imc/Historial'
+import ImcHistorial from './components/imc/historial/Historial'
 import ImcEstadisticas from './components/imc/Estadisticas'
 
 function App() {

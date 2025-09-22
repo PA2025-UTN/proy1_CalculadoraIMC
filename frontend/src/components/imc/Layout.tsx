@@ -6,7 +6,7 @@ const ImcLayout = () => {
     <div className="min-h-screen w-full flex flex-col items-center bg-slate-100">
       <Header />
 
-      <div className="mt-4">
+      <div className="p-4 flex-1">
         <Outlet />
       </div>
     </div>
