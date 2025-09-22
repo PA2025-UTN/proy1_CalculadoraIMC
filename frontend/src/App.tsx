@@ -6,7 +6,7 @@ import NotFound from './components/NotFound'
 import PublicRoute from './utils/PublicRoute'
 import ImcLayout from './components/imc/Layout'
 import ImcHistorial from './components/imc/historial/Historial'
-import ImcEstadisticas from './components/imc/Estadisticas'
+import ImcEstadisticas from './components/imc/estadisticas/Estadisticas'
 
 function App() {
 
