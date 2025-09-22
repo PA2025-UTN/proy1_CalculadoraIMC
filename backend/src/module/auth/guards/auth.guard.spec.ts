@@ -12,7 +12,7 @@ describe('AuthGuard', () => {
   beforeEach(() => {
 
     mockAuthService = {
-        getPayload: jest.fn().mockReturnValue({ email: 'test@test.com'}),
+        getPayload: jest.fn().mockResolvedValue({ email: 'test@test.com'}),
     }
 
     mockUserService = {
@@ -27,7 +27,7 @@ describe('AuthGuard', () => {
           switchToHttp: () => ({
               getRequest: () => ({
                   headers: {
-                      authorization: token ? `Bearer ${token}` : undefined,
+                      authorization: token ? `Bearer ${token}` : '',
                   }
               })
           }),
