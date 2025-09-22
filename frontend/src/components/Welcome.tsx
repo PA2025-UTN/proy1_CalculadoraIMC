@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calculator, TrendingUp, Activity } from "lucide-react";
+import { Calculator, TrendingUp, Activity, History } from "lucide-react";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 
@@ -47,7 +47,7 @@ const Welcome = () => {
 
           <Card className="border-primary/20">
             <CardHeader className="text-center">
-              <Activity className="w-8 h-8 mx-auto mb-2 text-green-400" />
+              <History className="w-8 h-8 mx-auto mb-2 text-green-400" />
               <CardTitle className="text-lg">Historial</CardTitle>
             </CardHeader>
             <CardContent>

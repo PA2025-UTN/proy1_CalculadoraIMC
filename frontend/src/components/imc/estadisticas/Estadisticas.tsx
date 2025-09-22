@@ -1,6 +1,6 @@
 const ImcEstadisticas = () => {
   return (
-    <div></div>
+    <div>Próximamente...</div>
   )
 }
 
