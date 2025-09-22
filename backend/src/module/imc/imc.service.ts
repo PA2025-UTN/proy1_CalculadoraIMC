@@ -1,38 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Imc } from './entities/imc.entity';
-import { UsersService } from '../users/users.service';
+import { Injectable } from "@nestjs/common";
+import { UsersService } from "../users/users.service";
+import { HistorialQueryDto } from "./dto/historial-query-dto";
+import { ImcRepository } from "./repositories/imc.repository";
 
 @Injectable()
 export class ImcService {
   constructor(
-    @InjectRepository(Imc)
-    private readonly imcRepo: Repository<Imc>,
+    private readonly repository: ImcRepository,
     private readonly usersService: UsersService,
   ) { }
 
   async calcularIMC(userId: number, peso: number, altura: number) {
     const imc = peso / (altura * altura);
     const imcRedondeado = Math.round(imc * 100) / 100;
+
     let categoria: string;
-    if (imc < 18.5) {
-      categoria = 'Bajo peso';
-    } else if (imc < 25) {
-      categoria = 'Peso normal';
-    } else if (imc < 30) {
-      categoria = 'Sobrepeso';
-    } else {
-      categoria = 'Obesidad';
-    }
+    if (imc < 18.5) categoria = 'Bajo peso';
+    else if (imc < 25) categoria = 'Peso normal';
+    else if (imc < 30) categoria = 'Sobrepeso';
+    else categoria = 'Obesidad';
 
     const user = await this.usersService.findById(userId);
+    if (!user) throw new Error(`Usuario ${userId} no encontrado`);
 
-    if (!user) {
-      throw new Error(`Usuario ${userId} no encontrado`);
-    }
-
-    const resultado = this.imcRepo.create({
+    const resultado = this.repository.create({
       peso,
       altura,
       imc: imcRedondeado,
@@ -40,14 +31,11 @@ export class ImcService {
       user,
     });
 
-    return this.imcRepo.save(resultado);
+    return this.repository.save(resultado);
   }
 
-  async obtenerHistorial(userId: number) {
-    return this.imcRepo.find({
-      where: { user: { id: userId } },
-      order: { fecha: 'DESC' },
-    });
+  async obtenerHistorial(userId: number, filtros: HistorialQueryDto) {
+    return this.repository.findHistorial(userId, filtros);
   }
 }
 

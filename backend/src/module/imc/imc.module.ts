@@ -6,6 +6,7 @@ import { Imc } from './entities/imc.entity';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { ImcRepository } from './repositories/imc.repository';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
     UsersModule
   ],
   controllers: [ImcController],
-  providers: [ImcService, AuthGuard],
+  providers: [ImcService, AuthGuard, ImcRepository],
   exports: [ImcService]
 })
 export class ImcModule { }
