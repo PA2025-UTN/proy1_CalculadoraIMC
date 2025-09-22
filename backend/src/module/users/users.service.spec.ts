@@ -143,7 +143,7 @@ describe('UsersService', () => {
   });
 
   it('Debería encontrar un usuario por email incluyendo password', async () => {
-      const email = 'usuario1@test.com';
+    const email = 'usuario1@test.com';
     const usuario: User = { id: 1, usuario: 'user1', email, password: 'pass1', imc: []};
     (userRepository.findByEmailWithPassword as jest.Mock).mockResolvedValue(usuario);
 
