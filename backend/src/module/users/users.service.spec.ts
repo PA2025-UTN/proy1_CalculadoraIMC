@@ -117,5 +117,40 @@ describe('UsersService', () => {
 
     expect(result).toEqual({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
     expect(userRepository.findByEmail).toHaveBeenCalledWith(email) ;
+}); 
+
+  it('Debería retornar todos los usuarios', async () => {
+    const users: User[] = [
+      { id: 1, usuario: 'user1', email: 'user1@example.com', password: 'pass1', imc: [] },
+      { id: 2, usuario: 'user2', email: 'user2@example.com', password: 'pass2', imc: [] },
+    ];
+    (userRepository.getUsers as jest.Mock).mockResolvedValue(users);
+
+    const result = await service.getUsers();
+
+    expect(result).toEqual(users);
+    expect(userRepository.getUsers).toHaveBeenCalled();
   });
+
+  it('Debería encontrar un usuario por ID', async () => {
+    const user: User = { id: 1, usuario: 'user1', email: 'user1@example.com', password: 'pass1', imc: [] };
+    (userRepository.findById as jest.Mock).mockResolvedValue(user);
+
+    const result = await service.findById(1);
+
+    expect(result).toEqual(user);
+    expect(userRepository.findById).toHaveBeenCalledWith(1);
+  });
+
+  it('Debería encontrar un usuario por email incluyendo password', async () => {
+    const email = 'usuario1@test.com';
+    const usuario: User = { id: 1, usuario: 'user1', email, password: 'pass1', imc: []};
+    (userRepository.findByEmailWithPassword as jest.Mock).mockResolvedValue(usuario);
+
+    const result = await service.findByEmailWithPassword(email);
+
+    expect(result).toEqual(usuario);
+    expect(userRepository.findByEmailWithPassword).toHaveBeenCalledWith(email);
+  });
+ 
 });
