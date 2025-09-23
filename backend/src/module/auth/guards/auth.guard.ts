@@ -37,7 +37,6 @@ export class AuthGuard implements CanActivate {
       request.user = user;
       return true;
     } catch (error) {
-      console.log(error);
       throw new UnauthorizedException(error?.message);
     }
   }

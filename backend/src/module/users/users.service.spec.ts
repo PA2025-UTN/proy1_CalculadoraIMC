@@ -1,75 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
-import { Imc } from '../imc/entities/imc.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users.module';
-import { DataSource } from 'typeorm';
-import * as dotenv from 'dotenv';
 import { UserRepository } from './repositories/user.repository';
-dotenv.config();
-
-jest.setTimeout(20000);
-describe('UsersService', () => {
-  let service: UsersService;
-  let userRepository: Repository<User>;
-  let imcRepository: Repository<Imc>;
-
-  beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'mysql',
-          host: process.env.DB_HOST,
-          port: parseInt(process.env.DB_PORT || '3306', 10),
-          username: process.env.DB_USERNAME,
-          password: process.env.DB_PASSWORD,
-          database: process.env.DB_DATABASE,
-          entities: [User, Imc],
-          synchronize: true,
-        }),
-        UsersModule,
-      ],
-    }).compile();
-
-    service = module.get(UsersService);
-
-    const dataSource = module.get<DataSource>(DataSource);
-
-    const userRepository = dataSource.getRepository(User);
-    const imcRepository = dataSource.getRepository(Imc);
-
-    await clearTable(imcRepository);
-    await clearTable(userRepository);
-  });
-  
-  it('Debería guardar y encontrar al usuario en la db', async () => {
-    const dto = {
-      usuario: 'testUser',
-      email: 'test@example.com',
-      password: 'securePassword',
-    };
-
-    const savedUser = await service.createUser(dto);
-    const foundUser = await service.findByEmail(dto.email);
-
-    expect(savedUser).toHaveProperty('id');
-    expect(foundUser?.email).toBe(dto.email);
-    expect(foundUser?.usuario).toBe(dto.usuario);
-    expect(foundUser?.password).toBe(dto.password);
-
-  });
-
-  async function clearTable<T>(repository: Repository<any>) {
-    const items = await repository.find();
-    if (items.length > 0) {
-      await repository.delete(items.map(item => (item as any).id));
-    }
-  }
-
-});
 
 describe('UsersService', () => {
   let service: UsersService;

@@ -5,6 +5,7 @@ import { User } from "../users/entities/user.entity";
 import { UsersService } from "../users/users.service"; 
 import { getRepositoryToken} from "@nestjs/typeorm";
 import { Imc } from "./entities/imc.entity";
+import { ImcRepository } from "./repositories/imc.repository";
 
 describe('ImcService', () => {
   let service: ImcService;
@@ -46,7 +47,7 @@ describe('ImcService', () => {
           },
         },
         {
-          provide: getRepositoryToken(Imc),
+          provide: ImcRepository,
           useValue: imcRepo
         }
       ],
