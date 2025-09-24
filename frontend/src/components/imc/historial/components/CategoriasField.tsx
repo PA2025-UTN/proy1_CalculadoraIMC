@@ -38,6 +38,7 @@ export function CategoriasField({ control }: Props) {
             <Popover>
               <PopoverTrigger>
                 <Button
+                  type="button"
                   variant="outline"
                   className="w-52 justify-between cursor-pointer font-normal"
                 >

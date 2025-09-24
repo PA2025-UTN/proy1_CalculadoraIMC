@@ -44,7 +44,10 @@ export default function HistorialFilters({ onSubmit }: Props) {
           size="sm"
           type="button"
           variant="outline"
-          onClick={() => reset()}
+          onClick={() => {
+            reset()
+            handleSubmit(onFormSubmit)()
+          }}
         >
           Limpiar filtros
         </Button>

@@ -1,6 +1,10 @@
+import { Card } from "@/components/ui/card"
+
 const ImcEstadisticas = () => {
   return (
-    <div>Próximamente...</div>
+    <Card>
+      Próximamente...
+    </Card>
   )
 }
 
