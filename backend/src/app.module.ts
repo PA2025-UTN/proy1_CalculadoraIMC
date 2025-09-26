@@ -4,6 +4,7 @@ import { AuthModule } from './module/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './module/users/users.module';
+import { EstadisticasModule } from './module/estadisticas/estadisticas.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { UsersModule } from './module/users/users.module';
     }),
     ImcModule,
     AuthModule,
-    UsersModule
+    UsersModule,
+    EstadisticasModule
   ],
 })
 
