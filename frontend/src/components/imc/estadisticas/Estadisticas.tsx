@@ -1,10 +1,10 @@
-import { Card } from "@/components/ui/card"
+import Data from "./components/Data"
 
 const ImcEstadisticas = () => {
   return (
-    <Card>
-      Próximamente...
-    </Card>
+    <div className="w-[50vw]">
+      <Data />
+    </div>
   )
 }
 
