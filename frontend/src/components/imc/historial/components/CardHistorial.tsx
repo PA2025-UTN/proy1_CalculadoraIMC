@@ -24,7 +24,7 @@ const CardHistorial = ({ imc, peso, altura, categoria, fecha }: HistorialProps) 
           <div className="text-lg font-semibold text-primary">{imc}</div>
         </div>
         <div className="text-md">
-          {new Date(fecha).toLocaleString("es-AR")}
+          {new Date(fecha).toLocaleString("es-AR", { timeZone: "America/Belize" })}
         </div>
       </div>
       <div className="flex justify-between items-center">

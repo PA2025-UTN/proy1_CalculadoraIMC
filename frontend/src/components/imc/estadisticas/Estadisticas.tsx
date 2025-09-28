@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import Data from "./components/Data"
 import { useEstadisticas } from "./hooks/useEstadisticas"
+import ChartEvolucion from "./components/ChartEvolucion"
 
 const ImcEstadisticas = () => {
   const token = localStorage.getItem("accessToken")
@@ -47,6 +48,7 @@ const ImcEstadisticas = () => {
         </h2>
       </div>
       <Data />
+      <ChartEvolucion />
     </div>
   )
 }
