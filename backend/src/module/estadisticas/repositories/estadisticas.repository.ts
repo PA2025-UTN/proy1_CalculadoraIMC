@@ -40,6 +40,11 @@ export class EstadisticasRepository implements IEstadisticasRepository {
           WHERE i."userId" = :userId
           ORDER BY i.fecha DESC
           LIMIT 1) as altura_ultimo`,
+        `(SELECT i.fecha
+          FROM imc i
+          WHERE i."userId" = :userId
+          ORDER BY i.fecha DESC
+          LIMIT 1) as fecha_ultimo`,
       ])
       .where("imc.userId = :userId", { userId });
 

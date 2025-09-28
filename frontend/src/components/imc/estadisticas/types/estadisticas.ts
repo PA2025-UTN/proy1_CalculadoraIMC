@@ -12,6 +12,7 @@ export interface ResumenEstadisticas {
   imcUltimo: number;
   pesoUltimo: number;
   alturaUltimo: number;
+  fechaUltimo: string;
   total: number;
 }
 

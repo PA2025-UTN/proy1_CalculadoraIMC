@@ -22,6 +22,7 @@ export class EstadisticasService {
       imcUltimo: parseFloat(raw.imc_ultimo) || 0,
       pesoUltimo: parseFloat(raw.peso_ultimo) || 0,
       alturaUltimo: parseFloat(raw.altura_ultimo) || 0,
+      fechaUltimo: new Date(raw.fecha_ultimo).toLocaleString("es-AR", { timeZone: "America/Belize" }),
       total: parseInt(raw.total, 10) || 0,
     };
   }

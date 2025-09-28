@@ -43,6 +43,7 @@ const ImcEstadisticas = () => {
           <span className="text-primary"> IMC: <strong>{resumen?.imcUltimo}</strong></span> -
           <span className="text-primary"> peso: <strong>{resumen?.pesoUltimo}</strong> kg</span> -
           <span className="text-primary"> altura: <strong>{resumen?.alturaUltimo}</strong> m</span>
+          <span className="text-primary"> ({resumen?.fechaUltimo})</span>
         </h2>
       </div>
       <Data />

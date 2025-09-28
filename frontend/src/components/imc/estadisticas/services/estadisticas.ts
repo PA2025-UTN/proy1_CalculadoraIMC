@@ -29,6 +29,7 @@ export async function fetchResumen(): Promise<ResumenEstadisticas> {
     imcUltimo: parseFloat(data.imcUltimo),
     pesoUltimo: parseFloat(data.pesoUltimo),
     alturaUltimo: parseFloat(data.alturaUltimo),
+    fechaUltimo: data.fechaUltimo,
     total: Number(data.total),
   };
 }
