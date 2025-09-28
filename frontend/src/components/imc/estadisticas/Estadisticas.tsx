@@ -39,7 +39,7 @@ const ImcEstadisticas = () => {
       <div className="flex flex-col">
         <h1 className="text-3xl font-semibold">Hola, {usuario}</h1>
         <h2 className="text-primary/60">
-          Ultimos datos registrados:
+          Últimos datos registrados:
           <span className="text-primary"> IMC: <strong>{resumen?.imcUltimo}</strong></span> -
           <span className="text-primary"> peso: <strong>{resumen?.pesoUltimo}</strong> kg</span> -
           <span className="text-primary"> altura: <strong>{resumen?.alturaUltimo}</strong> m</span>
