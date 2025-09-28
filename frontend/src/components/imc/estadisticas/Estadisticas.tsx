@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import Data from "./components/Data"
 import { useEstadisticas } from "./hooks/useEstadisticas"
+import ChartEvolucion from "./components/ChartEvolucion"
 
 const ImcEstadisticas = () => {
   const token = localStorage.getItem("accessToken")
@@ -43,9 +44,11 @@ const ImcEstadisticas = () => {
           <span className="text-primary"> IMC: <strong>{resumen?.imcUltimo}</strong></span> -
           <span className="text-primary"> peso: <strong>{resumen?.pesoUltimo}</strong> kg</span> -
           <span className="text-primary"> altura: <strong>{resumen?.alturaUltimo}</strong> m</span>
+          <span className="text-primary"> ({resumen?.fechaUltimo})</span>
         </h2>
       </div>
       <Data />
+      <ChartEvolucion />
     </div>
   )
 }

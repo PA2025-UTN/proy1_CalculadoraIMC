@@ -12,6 +12,7 @@ export interface IEstadisticasRepository {
     imc_ultimo: string;
     peso_ultimo: string;
     altura_ultimo: string;
+    fecha_ultimo: Date;
     total: string;
   }>;
 

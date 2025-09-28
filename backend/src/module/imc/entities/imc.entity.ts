@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('imc')
@@ -18,7 +18,7 @@ export class Imc {
   @Column()
   categoria: string;
 
-  @CreateDateColumn()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   fecha: Date;
 
   @ManyToOne(() => User, (user) => user.imc, { onDelete: 'CASCADE' })
