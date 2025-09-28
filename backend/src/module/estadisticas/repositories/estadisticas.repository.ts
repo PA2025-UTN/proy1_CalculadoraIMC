@@ -15,10 +15,31 @@ export class EstadisticasRepository implements IEstadisticasRepository {
     const qb = this.repository
       .createQueryBuilder("imc")
       .select([
-        "AVG(imc.imc) as promedio",
-        "MIN(imc.imc) as minimo",
-        "MAX(imc.imc) as maximo",
+        "AVG(imc.imc) as imc_promedio",
+        "MIN(imc.imc) as imc_minimo",
+        "MAX(imc.imc) as imc_maximo",
+        "AVG(imc.peso) as peso_promedio",
+        "MIN(imc.peso) as peso_minimo",
+        "MAX(imc.peso) as peso_maximo",
+        "AVG(imc.altura) as altura_promedio",
+        "MIN(imc.altura) as altura_minimo",
+        "MAX(imc.altura) as altura_maximo",
         "COUNT(imc.id) as total",
+        `(SELECT i.imc
+          FROM imc i
+          WHERE i."userId" = :userId
+          ORDER BY i.fecha DESC
+          LIMIT 1) as imc_ultimo`,
+        `(SELECT i.peso
+          FROM imc i
+          WHERE i."userId" = :userId
+          ORDER BY i.fecha DESC
+          LIMIT 1) as peso_ultimo`,
+        `(SELECT i.altura
+          FROM imc i
+          WHERE i."userId" = :userId
+          ORDER BY i.fecha DESC
+          LIMIT 1) as altura_ultimo`,
       ])
       .where("imc.userId = :userId", { userId });
 

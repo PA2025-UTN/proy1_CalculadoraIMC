@@ -1,8 +1,17 @@
 export interface IEstadisticasRepository {
   getResumen(userId: number): Promise<{
-    promedio: string;
-    minimo: string;
-    maximo: string;
+    imc_promedio: string;
+    imc_minimo: string;
+    imc_maximo: string;
+    peso_promedio: string;
+    peso_minimo: string;
+    peso_maximo: string;
+    altura_promedio: string;
+    altura_minimo: string;
+    altura_maximo: string;
+    imc_ultimo: string;
+    peso_ultimo: string;
+    altura_ultimo: string;
     total: string;
   }>;
 
