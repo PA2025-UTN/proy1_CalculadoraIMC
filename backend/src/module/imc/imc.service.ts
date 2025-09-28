@@ -10,7 +10,7 @@ export class ImcService {
     private readonly usersService: UsersService,
   ) { }
 
-  async calcularIMC(userId: number, peso: number, altura: number) {
+  async calcularIMC(userId: number, peso: number, altura: number, fecha?: Date) {
     const imc = peso / (altura * altura);
     const imcRedondeado = Math.round(imc * 100) / 100;
 
@@ -28,6 +28,7 @@ export class ImcService {
       altura,
       imc: imcRedondeado,
       categoria,
+      fecha,
       user,
     });
 
