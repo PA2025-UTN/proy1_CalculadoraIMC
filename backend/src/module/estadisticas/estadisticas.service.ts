@@ -10,13 +10,13 @@ export class EstadisticasService {
   async getResumen(userId: number) {
     const raw = await this.repository.getResumen(userId);
     return {
-      imcPromedio: parseFloat(raw.imc_promedio).toFixed(2) || 0,
+      imcPromedio: parseFloat(raw.imc_promedio || 0).toFixed(2),
       imcMinimo: parseFloat(raw.imc_minimo) || 0,
       imcMaximo: parseFloat(raw.imc_maximo) || 0,
-      pesoPromedio: parseFloat(raw.peso_promedio).toFixed(2) || 0,
+      pesoPromedio: parseFloat(raw.peso_promedio || 0).toFixed(2),
       pesoMinimo: parseFloat(raw.peso_minimo) || 0,
       pesoMaximo: parseFloat(raw.peso_maximo) || 0,
-      alturaPromedio: parseFloat(raw.altura_promedio).toFixed(2) || 0,
+      alturaPromedio: parseFloat(raw.altura_promedio || 0).toFixed(2),
       alturaMinimo: parseFloat(raw.altura_minimo) || 0,
       alturaMaximo: parseFloat(raw.altura_maximo) || 0,
       imcUltimo: parseFloat(raw.imc_ultimo) || 0,

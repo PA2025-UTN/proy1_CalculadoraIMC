@@ -6,11 +6,13 @@ import { useEstadisticas } from "./hooks/useEstadisticas"
 const ImcEstadisticas = () => {
   const token = localStorage.getItem("accessToken")
   const [usuario, setUsuario] = useState<string>("")
+  const [loading, setLoading] = useState(false)
 
   const { resumen } = useEstadisticas()
 
   useEffect(() => {
     const getNombreUsuario = async () => {
+      setLoading(true)
       if (!token) return
 
       try {
@@ -22,11 +24,15 @@ const ImcEstadisticas = () => {
         setUsuario(response.data.usuario)
       } catch (err) {
         console.log(err)
+      } finally {
+        setLoading(false)
       }
     }
 
     getNombreUsuario()
   }, [token])
+
+  if (loading) return null
 
   return (
     <div className="w-[60vw] space-y-4">
