@@ -66,4 +66,64 @@ describe('AuthService', () => {
     await expect(authService.login({ email: 'test@test.com', password: '654321' }))
       .rejects.toThrow('Contraseña incorrecta');
   });
+
+  it('Debería lanzar excepción si el usuario ya existe', async () => {
+  const dto: RegisterDTO = {
+    usuario: 'Santiago',
+    email: 'test@test.com',
+    password: '123456',
+  };
+
+  (mockUsersService.findByEmail as jest.Mock).mockResolvedValue({ id: 1 });
+
+  await expect(authService.register(dto))
+    .rejects.toThrow('El usuario ya existe');
+});
+
+it('Debería lanzar excepción si el usuario no existe', async () => {
+  (mockUsersService.findByEmailWithPassword as jest.Mock).mockResolvedValue(null);
+
+  await expect(authService.login({ email: 'no@existe.com', password: '123456' }))
+    .rejects.toThrow('Usuario no encontrado');
+});
+
+it('Debería renovar access y refresh token si el refresh está por expirar', () => {
+  const payload = {
+    email: 'test@test.com',
+    exp: Math.floor(Date.now() / 1000) + 60 * 10, // 10 minutos restantes
+  };
+
+  (jwt.verify as jest.Mock).mockReturnValue(payload);
+  (jwt.sign as jest.Mock).mockReturnValue('token');
+
+  const result = authService.refreshToken('refreshToken');
+  expect(result).toEqual({
+    accessToken: 'token',
+    refreshToken: 'token',
+  });
+});
+
+it('Debería renovar solo accessToken si el refresh aún es válido', () => {
+  const payload = {
+    email: 'test@test.com',
+    exp: Math.floor(Date.now() / 1000) + 60 * 30, // 30 minutos restantes
+  };
+
+  (jwt.verify as jest.Mock).mockReturnValue(payload);
+  (jwt.sign as jest.Mock).mockReturnValue('token');
+
+  const result = authService.refreshToken('refreshToken');
+  expect(result).toEqual({ accessToken: 'token' });
+});
+
+it('Debería obtener el payload desde un token válido', () => {
+  const payload = { email: 'test@test.com', iat: 123, exp: 456 };
+  (jwt.verify as jest.Mock).mockReturnValue(payload);
+
+  const result = authService.getPayload('token');
+  expect(result).toEqual(payload);
+  expect(jwt.verify).toHaveBeenCalledWith('token', expect.any(String));
+});
+
+
 });

@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../auth/guards/auth.guard";
-import { ActiveUser } from "@/common/decorators/active-user.decorator";
-import { IUserActive } from "@/common/interfaces/user-active";
+import { ActiveUser } from "../../common/decorators/active-user.decorator";
+import { IUserActive } from "../../common/interfaces/user-active";
 import { EstadisticasService } from "./estadisticas.service";
 
 @Controller('estadisticas')
