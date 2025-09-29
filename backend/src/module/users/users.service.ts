@@ -5,26 +5,26 @@ import { User } from './entities/user.entity'
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UserRepository) { }
+  constructor(private readonly respository: UserRepository) { }
 
   createUser(createUserDto: CreateUserDto): Promise<User> {
-    return this.userRepository.createUser(createUserDto)
+    return this.respository.createUser(createUserDto)
   }
 
   getUsers(): Promise<User[]> {
-    return this.userRepository.getUsers()
+    return this.respository.getUsers()
   }
 
   findById(id: number): Promise<User | null> {
-    return this.userRepository.findById(id)
+    return this.respository.findById(id)
   }
 
   findByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findByEmail(email)
+    return this.respository.findByEmail(email)
   }
 
   findByEmailWithPassword(email: string): Promise<User | null> {
-    return this.userRepository.findByEmailWithPassword(email)
+    return this.respository.findByEmailWithPassword(email)
   }
 }
 
