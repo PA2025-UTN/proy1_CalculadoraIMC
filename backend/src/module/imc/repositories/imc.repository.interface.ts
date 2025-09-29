@@ -1,9 +1,9 @@
-import { Imc } from "../entities/imc.entity";
+import { ImcModel } from "../models/imc.model";
 import { HistorialQueryDto } from "../dto/historial-query-dto";
 
 export interface IImcRepository {
-  save(imc: Imc): Promise<Imc>;
-  findByUserId(userId: number): Promise<Imc[]>;
-  findHistorial(userId: number, filtros: HistorialQueryDto): Promise<Imc[]>;
-  create(imc: Partial<Imc>): Imc;
+  save(imc: ImcModel): Promise<ImcModel>;
+  findByUserId(userId: string): Promise<ImcModel[]>;
+  findHistorial(userId: string, filtros: HistorialQueryDto): Promise<ImcModel[]>;
+  create(imc: Partial<ImcModel>): ImcModel;
 }
