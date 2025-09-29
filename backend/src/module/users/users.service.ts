@@ -1,30 +1,32 @@
-import { Injectable } from '@nestjs/common'
-import { UserRepository } from './repositories/user.repository'
-import { CreateUserDto } from './dto/create-user.dto'
-import { User } from './entities/user.entity'
+import { Injectable, Inject } from '@nestjs/common';
+import { IUserRepository } from './repositories/user.repository.interface';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserModel } from './models/user.model';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly respository: UserRepository) { }
+  constructor(
+    @Inject('IUserRepository') private readonly repository: IUserRepository,
+  ) { }
 
-  createUser(createUserDto: CreateUserDto): Promise<User> {
-    return this.respository.createUser(createUserDto)
+  createUser(createUserDto: CreateUserDto): Promise<UserModel> {
+    return this.repository.createUser(createUserDto);
   }
 
-  getUsers(): Promise<User[]> {
-    return this.respository.getUsers()
+  getUsers(): Promise<UserModel[]> {
+    return this.repository.getUsers();
   }
 
-  findById(id: number): Promise<User | null> {
-    return this.respository.findById(id)
+  findById(id: number): Promise<UserModel | null> {
+    return this.repository.findById(id);
   }
 
-  findByEmail(email: string): Promise<User | null> {
-    return this.respository.findByEmail(email)
+  findByEmail(email: string): Promise<UserModel | null> {
+    return this.repository.findByEmail(email);
   }
 
-  findByEmailWithPassword(email: string): Promise<User | null> {
-    return this.respository.findByEmailWithPassword(email)
+  findByEmailWithPassword(email: string): Promise<UserModel | null> {
+    return this.repository.findByEmailWithPassword(email);
   }
 }
 

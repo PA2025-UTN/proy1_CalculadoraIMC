@@ -1,13 +1,14 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
 import { HistorialQueryDto } from "./dto/historial-query-dto";
-import { ImcPostgresRepository } from "./repositories/imc.repository";
 import { ImcModel } from "./models/imc.model";
+import { IImcRepository } from "./repositories/imc.repository.interface";
 
 @Injectable()
 export class ImcService {
   constructor(
-    private readonly repository: ImcPostgresRepository,
+    @Inject('IImcRepository')
+    private readonly repository: IImcRepository,
     private readonly usersService: UsersService,
   ) { }
 

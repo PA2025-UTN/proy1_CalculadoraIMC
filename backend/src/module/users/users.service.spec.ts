@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
-import { UserRepository } from './repositories/user.repository';
+import { UserRepository } from './repositories/user-postgres.repository';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -29,7 +29,7 @@ describe('UsersService', () => {
 
     service = module.get<UsersService>(UsersService);
     userRepository = module.get(UserRepository);
-    
+
   });
 
   it('Debería crear un usuario', async () => {
@@ -49,8 +49,8 @@ describe('UsersService', () => {
     const result = await service.findByEmail(email);
 
     expect(result).toEqual({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
-    expect(userRepository.findByEmail).toHaveBeenCalledWith(email) ;
-}); 
+    expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
+  });
 
   it('Debería retornar todos los usuarios', async () => {
     const users: User[] = [
@@ -77,7 +77,7 @@ describe('UsersService', () => {
 
   it('Debería encontrar un usuario por email incluyendo password', async () => {
     const email = 'usuario1@test.com';
-    const usuario: User = { id: 1, usuario: 'user1', email, password: 'pass1', imc: []};
+    const usuario: User = { id: 1, usuario: 'user1', email, password: 'pass1', imc: [] };
     (userRepository.findByEmailWithPassword as jest.Mock).mockResolvedValue(usuario);
 
     const result = await service.findByEmailWithPassword(email);
@@ -85,5 +85,5 @@ describe('UsersService', () => {
     expect(result).toEqual(usuario);
     expect(userRepository.findByEmailWithPassword).toHaveBeenCalledWith(email);
   });
- 
+
 });

@@ -8,6 +8,7 @@ import { Request } from 'express';
 import { AuthService } from '../auth.service';
 import { UsersService } from 'src/module/users/users.service';
 import { User } from 'src/module/users/entities/user.entity';
+import { UserModel } from '@/module/users/models/user.model';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -18,7 +19,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
-      const request: Request & { user: User } = context
+      const request: Request & { user?: User | UserModel } = context
         .switchToHttp()
         .getRequest();
       const token = request.headers.authorization;

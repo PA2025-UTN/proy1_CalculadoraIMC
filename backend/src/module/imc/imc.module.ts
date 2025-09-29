@@ -2,20 +2,40 @@ import { Module } from '@nestjs/common';
 import { ImcService } from './imc.service';
 import { ImcController } from './imc.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 import { Imc } from './entities/imc.entity';
+import { ImcMongo, ImcSchema } from './schemas/imc.schema';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { ImcPostgresRepository } from './repositories/imc.repository';
+import { ImcPostgresRepository } from './repositories/imc-postgres.repository';
+import { ImcMongoRepository } from './repositories/imc-mongo.repository';
+
+const imcRepositoryProvider = {
+  provide: 'IImcRepository',
+  useClass:
+    process.env.DB_TYPE === 'mongo' ? ImcMongoRepository : ImcPostgresRepository,
+};
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Imc]),
     AuthModule,
-    UsersModule
+    UsersModule,
+    // TypeORM solo si DB_TYPE no es mongo
+    ...(process.env.DB_TYPE !== 'mongo'
+      ? [TypeOrmModule.forFeature([Imc])]
+      : []),
+    // Mongoose solo si DB_TYPE es mongo
+    ...(process.env.DB_TYPE === 'mongo'
+      ? [MongooseModule.forFeature([{
+        name: ImcMongo.name,
+        schema: ImcSchema
+      }])]
+      : []),
   ],
   controllers: [ImcController],
-  providers: [ImcService, AuthGuard, ImcPostgresRepository],
-  exports: [ImcService]
+  providers: [ImcService, AuthGuard, imcRepositoryProvider],
+  exports: [ImcService],
 })
 export class ImcModule { }
+

@@ -5,7 +5,7 @@ import { Imc } from "../entities/imc.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { HistorialQueryDto } from "../dto/historial-query-dto";
 import { ImcModel } from "../models/imc.model";
-import { ImcMapper } from "../mapper/imc.mapper";
+import { ImcPostgresMapper } from "../mappers/imc-postgres.mapper";
 
 @Injectable()
 export class ImcPostgresRepository implements IImcRepository {
@@ -15,9 +15,9 @@ export class ImcPostgresRepository implements IImcRepository {
   ) { }
 
   async save(imc: ImcModel): Promise<ImcModel> {
-    const entity = ImcMapper.toEntity(imc);
+    const entity = ImcPostgresMapper.toEntity(imc);
     const saved: Imc = await this.repository.save(entity);
-    return ImcMapper.toModel(saved);
+    return ImcPostgresMapper.toModel(saved);
   }
 
   async findByUserId(userId: string): Promise<ImcModel[]> {
@@ -25,7 +25,7 @@ export class ImcPostgresRepository implements IImcRepository {
       where: { user: { id: Number(userId) } },
       order: { fecha: 'DESC' },
     });
-    return entities.map(ImcMapper.toModel);
+    return entities.map(ImcPostgresMapper.toModel);
   }
 
   async findHistorial(userId: string, filtros: HistorialQueryDto): Promise<ImcModel[]> {
@@ -66,7 +66,7 @@ export class ImcPostgresRepository implements IImcRepository {
 
     const results = await this.repository.find({ where, order, relations: { user: true } });
 
-    return results.map(ImcMapper.toModel);
+    return results.map(ImcPostgresMapper.toModel);
   }
 
   create(imc: Partial<ImcModel>): ImcModel {
