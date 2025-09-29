@@ -1,41 +1,45 @@
-import { Injectable } from "@nestjs/common";
-import { EstadisticasRepository } from "./repositories/estadisticas.repository";
+import { Inject, Injectable } from "@nestjs/common";
+import { IEstadisticasRepository } from "./repositories/estadisticas.repository.interface";
 
 @Injectable()
 export class EstadisticasService {
   constructor(
-    private readonly repository: EstadisticasRepository,
+    @Inject('IEstadisticasRepository')
+    private readonly repository: IEstadisticasRepository,
   ) { }
 
-  async getResumen(userId: number) {
+  async getResumen(userId: string) {
     const raw = await this.repository.getResumen(userId);
+
     return {
-      imcPromedio: parseFloat(raw.imc_promedio || 0).toFixed(2),
-      imcMinimo: parseFloat(raw.imc_minimo) || 0,
-      imcMaximo: parseFloat(raw.imc_maximo) || 0,
-      pesoPromedio: parseFloat(raw.peso_promedio || 0).toFixed(2),
-      pesoMinimo: parseFloat(raw.peso_minimo) || 0,
-      pesoMaximo: parseFloat(raw.peso_maximo) || 0,
-      alturaPromedio: parseFloat(raw.altura_promedio || 0).toFixed(2),
-      alturaMinimo: parseFloat(raw.altura_minimo) || 0,
-      alturaMaximo: parseFloat(raw.altura_maximo) || 0,
-      imcUltimo: parseFloat(raw.imc_ultimo) || 0,
-      pesoUltimo: parseFloat(raw.peso_ultimo) || 0,
-      alturaUltimo: parseFloat(raw.altura_ultimo) || 0,
-      fechaUltimo: new Date(raw.fecha_ultimo).toLocaleString("es-AR", { timeZone: "America/Belize" }),
-      total: parseInt(raw.total, 10) || 0,
+      imcPromedio: raw.imc_promedio ? raw.imc_promedio.toFixed(2) : '0.00',
+      imcMinimo: raw.imc_minimo ?? 0,
+      imcMaximo: raw.imc_maximo ?? 0,
+      pesoPromedio: raw.peso_promedio ? raw.peso_promedio.toFixed(2) : '0.00',
+      pesoMinimo: raw.peso_minimo ?? 0,
+      pesoMaximo: raw.peso_maximo ?? 0,
+      alturaPromedio: raw.altura_promedio ? raw.altura_promedio.toFixed(2) : '0.00',
+      alturaMinimo: raw.altura_minimo ?? 0,
+      alturaMaximo: raw.altura_maximo ?? 0,
+      imcUltimo: raw.imc_ultimo ?? 0,
+      pesoUltimo: raw.peso_ultimo ?? 0,
+      alturaUltimo: raw.altura_ultimo ?? 0,
+      fechaUltimo: raw.fecha_ultimo
+        ? new Date(raw.fecha_ultimo).toLocaleString("es-AR", { timeZone: "America/Belize" })
+        : null,
+      total: raw.total ?? 0,
     };
   }
 
-  async getSerieIMC(userId: number) {
+  async getSerieIMC(userId: string) {
     return this.repository.getSerieIMC(userId);
   }
 
-  async getSeriePeso(userId: number) {
+  async getSeriePeso(userId: string) {
     return this.repository.getSeriePeso(userId);
   }
 
-  async getDistribucionCategorias(userId: number) {
+  async getDistribucionCategorias(userId: string) {
     return this.repository.getDistribucionCategorias(userId);
   }
 }

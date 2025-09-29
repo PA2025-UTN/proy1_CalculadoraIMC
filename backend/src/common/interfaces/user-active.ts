@@ -1,5 +1,5 @@
 export interface IUserActive {
-  id: number,
+  id: string,
   usuario: string;
   email: string;
 }

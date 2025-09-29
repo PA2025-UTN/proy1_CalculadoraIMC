@@ -1,7 +1,8 @@
+import { User } from "@/module/users/entities/user.entity";
 import { Imc } from "../entities/imc.entity";
 import { ImcModel } from "../models/imc.model";
 
-export class ImcMapper {
+export class ImcPostgresMapper {
   static toModel(entity: Imc): ImcModel {
     return {
       id: entity.id.toString(),
@@ -22,7 +23,7 @@ export class ImcMapper {
       imc: model.imc,
       categoria: model.categoria,
       fecha: model.fecha,
-      user: { id: Number(model.userId) } as any,
+      user: { id: Number(model.userId) } as User,
     } as Imc;
   }
 }

@@ -16,6 +16,6 @@ export class User {
   password: string;
 
   @OneToMany(() => Imc, (imc) => imc.user, { cascade: true })
-  imc: Imc[];
+  imc?: Imc[];
 }
 

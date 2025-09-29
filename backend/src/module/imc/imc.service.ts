@@ -1,18 +1,19 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
 import { HistorialQueryDto } from "./dto/historial-query-dto";
-import { ImcPostgresRepository } from "./repositories/imc.repository";
 import { ImcModel } from "./models/imc.model";
+import { IImcRepository } from "./repositories/imc.repository.interface";
 
 @Injectable()
 export class ImcService {
   constructor(
-    private readonly repository: ImcPostgresRepository,
+    @Inject('IImcRepository')
+    private readonly repository: IImcRepository,
     private readonly usersService: UsersService,
   ) { }
 
   async calcularIMC(
-    userId: number,
+    userId: string,
     peso: number,
     altura: number,
     fecha?: Date,
@@ -42,7 +43,7 @@ export class ImcService {
   }
 
   async obtenerHistorial(
-    userId: number,
+    userId: string,
     filtros: HistorialQueryDto,
   ): Promise<ImcModel[]> {
     return this.repository.findHistorial(userId.toString(), filtros);
