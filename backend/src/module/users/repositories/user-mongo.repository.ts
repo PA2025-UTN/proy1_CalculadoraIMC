@@ -24,7 +24,7 @@ export class UserMongoRepository implements IUserRepository {
     return users.map(u => UserMongoMapper.toModel(u));
   }
 
-  async findById(id: number): Promise<UserModel | null> {
+  async findById(id: string): Promise<UserModel | null> {
     const user = await this.userModel.findById(id).exec();
     return user ? UserMongoMapper.toModel(user) : null;
   }

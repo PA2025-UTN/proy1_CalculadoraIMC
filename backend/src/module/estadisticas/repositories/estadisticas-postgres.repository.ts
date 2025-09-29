@@ -5,7 +5,7 @@ import { Imc } from "../../imc/entities/imc.entity";
 import { IEstadisticasRepository } from "./estadisticas.repository.interface";
 
 @Injectable()
-export class EstadisticasRepository implements IEstadisticasRepository {
+export class EstadisticasPostgresRepository implements IEstadisticasRepository {
   constructor(
     @InjectRepository(Imc)
     private readonly repository: Repository<Imc>,

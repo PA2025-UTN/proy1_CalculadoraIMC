@@ -21,16 +21,9 @@ const imcRepositoryProvider = {
   imports: [
     AuthModule,
     UsersModule,
-    // TypeORM solo si DB_TYPE no es mongo
-    ...(process.env.DB_TYPE !== 'mongo'
-      ? [TypeOrmModule.forFeature([Imc])]
-      : []),
-    // Mongoose solo si DB_TYPE es mongo
+    ...(process.env.DB_TYPE !== 'mongo' ? [TypeOrmModule.forFeature([Imc])] : []),
     ...(process.env.DB_TYPE === 'mongo'
-      ? [MongooseModule.forFeature([{
-        name: ImcMongo.name,
-        schema: ImcSchema
-      }])]
+      ? [MongooseModule.forFeature([{ name: ImcMongo.name, schema: ImcSchema }])]
       : []),
   ],
   controllers: [ImcController],

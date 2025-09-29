@@ -17,7 +17,7 @@ export class UsersService {
     return this.repository.getUsers();
   }
 
-  findById(id: number): Promise<UserModel | null> {
+  findById(id: string): Promise<UserModel | null> {
     return this.repository.findById(id);
   }
 

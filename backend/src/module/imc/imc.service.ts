@@ -13,7 +13,7 @@ export class ImcService {
   ) { }
 
   async calcularIMC(
-    userId: number,
+    userId: string,
     peso: number,
     altura: number,
     fecha?: Date,
@@ -43,7 +43,7 @@ export class ImcService {
   }
 
   async obtenerHistorial(
-    userId: number,
+    userId: string,
     filtros: HistorialQueryDto,
   ): Promise<ImcModel[]> {
     return this.repository.findHistorial(userId.toString(), filtros);

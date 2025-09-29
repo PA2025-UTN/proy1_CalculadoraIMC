@@ -15,10 +15,7 @@ const userRepositoryProvider = {
 
 @Module({
   imports: [
-    // TypeORM solo si DB_TYPE no es mongo
     ...(process.env.DB_TYPE !== 'mongo' ? [TypeOrmModule.forFeature([User])] : []),
-
-    // Mongoose solo si DB_TYPE es mongo
     ...(process.env.DB_TYPE === 'mongo'
       ? [MongooseModule.forFeature([{ name: UserMongo.name, schema: UserSchema }])]
       : []),

@@ -24,8 +24,8 @@ export class UserPostgresRepository implements IUserRepository {
     return users.map(u => UserPostgresMapper.toModel(u));
   }
 
-  async findById(id: number): Promise<UserModel | null> {
-    const user = await this.repository.findOne({ where: { id: id } });
+  async findById(id: string): Promise<UserModel | null> {
+    const user = await this.repository.findOne({ where: { id: Number(id) } });
     return user ? UserPostgresMapper.toModel(user) : null;
   }
 

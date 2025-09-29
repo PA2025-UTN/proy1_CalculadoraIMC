@@ -43,7 +43,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
     // Mongo solo si DB_TYPE === 'mongo'
     ...(process.env.DB_TYPE === 'mongo'
-      ? [MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb')]
+      ? [MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/imc_db')]
       : []),
 
     ImcModule,
