@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from './app.module';
 import { ImcModule } from './module/imc/imc.module';
 import * as dotenv from 'dotenv';
+import { AuthModule } from './module/auth/auth.module';
+import { UsersModule } from './module/users/users.module';
+import { EstadisticasModule } from './module/estadisticas/estadisticas.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 dotenv.config({ path: '.env.test' });
 
 describe('AppModule', () => {
@@ -9,9 +12,20 @@ describe('AppModule', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: ':memory:',
+      synchronize: true,
+      autoLoadEntities: true,
+    }),
+    ImcModule,
+    AuthModule,
+    UsersModule,
+    EstadisticasModule,
+  ],
     }).compile();
-  }, 15000);
+  }, 5000);
 
   it('should compile the AppModule', () => {
     expect(module).toBeDefined();
