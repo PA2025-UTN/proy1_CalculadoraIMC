@@ -2,9 +2,6 @@ import { EstadisticasRepository } from './estadisticas.repository';
 import { Repository } from 'typeorm';
 import { Imc } from '../../imc/entities/imc.entity';
 
-function createMock<T>(): jest.Mocked<T> {
-  return {} as jest.Mocked<T>;
-}
 
 describe('EstadisticasRepository', () => {
   let repo: EstadisticasRepository;
