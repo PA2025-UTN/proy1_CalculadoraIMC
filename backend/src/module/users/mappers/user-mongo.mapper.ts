@@ -2,7 +2,7 @@ import { UserModel } from '../models/user.model';
 import { UserMongo } from '../schemas/user.schema';
 
 export class UserMongoMapper {
-  static toModel(user: any): UserModel {
+  static toModel(user: UserMongo): UserModel {
     return {
       id: user._id.toString(),
       usuario: user.usuario,
