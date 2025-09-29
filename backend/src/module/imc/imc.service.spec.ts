@@ -3,9 +3,7 @@ import { ImcService } from "./imc.service";
 import { CalcularImcDto } from "./dto/calcular-imc-dto";
 import { User } from "../users/entities/user.entity";
 import { UsersService } from "../users/users.service"; 
-import { getRepositoryToken} from "@nestjs/typeorm";
-import { Imc } from "./entities/imc.entity";
-import { ImcRepository } from "./repositories/imc.repository";
+import { ImcPostgresRepository } from "./repositories/imc.repository";
 
 describe('ImcService', () => {
   let service: ImcService;
@@ -47,7 +45,7 @@ describe('ImcService', () => {
           },
         },
         {
-          provide: ImcRepository,
+          provide: ImcPostgresRepository,
           useValue: imcRepo
         }
       ],

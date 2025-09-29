@@ -4,6 +4,7 @@ import { ImcService } from './imc.service';
 import { CalcularImcDto } from './dto/calcular-imc-dto';
 import { BadRequestException, CanActivate, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { HistorialQueryDto } from './dto/historial-query-dto';
 
 describe('ImcController', () => {
   let controller: ImcController;
@@ -45,12 +46,13 @@ describe('ImcController', () => {
     const dto: CalcularImcDto = { altura: 1.75, peso: 70 };
     const usuarioMock = { id: 1, usuario: 'testUser', email: 'test@example.com', password: '123', imc: [] }
     const resultadoEsperado = {
-      id: 1,
+      id: '1',
       peso: 70,
       altura: 1.75,
       imc: 22.86,
       categoria: 'Peso normal',
       fecha: new Date(),
+      userId: '1',
       user: usuarioMock,
     };
     jest.spyOn(service, 'calcularIMC').mockResolvedValue(resultadoEsperado);
@@ -71,4 +73,67 @@ describe('ImcController', () => {
     // Verificar que el servicio no se llama porque la validación falla antes
     expect(service.calcularIMC).not.toHaveBeenCalled();
   });
+
+  it('should return historial for valid query', async () => {
+  const usuarioMock = { id: 1, usuario: 'testUser', email: 'test@example.com', password: '123', imc: [] };
+  const query: HistorialQueryDto = {
+    from: '2025-07-01',
+    to: '2025-09-29',
+    categoria: ['normal'],
+  };
+
+  const historialMock = [
+    {
+      id: '1',
+      peso: 70,
+      altura: 1.75,
+      imc: 22.86,
+      categoria: 'Peso normal',
+      fecha: new Date('2025-09-01'),
+      userId: '1',
+      user: usuarioMock,
+    },
+  ];
+
+  jest.spyOn(service, 'obtenerHistorial').mockResolvedValue(historialMock);
+
+  const resultado = await controller.historial(usuarioMock, query);
+  expect(resultado).toEqual(historialMock);
+  expect(service.obtenerHistorial).toHaveBeenCalledWith(usuarioMock.id, query);
+  });
+
+  it('should generate 100 random IMC records', async () => {
+  const usuarioMock = { id: 1, usuario: 'testUser', email: 'test@example.com', password: '123', imc: [] };
+  const resultadoMock = { id: '1',
+  peso: 70,
+  altura: 1.75,
+  imc: 22.86,
+  categoria: 'normal',
+  fecha: new Date(),
+  userId: '1',
+  user: {
+    id: 1,
+    usuario: 'testUser',
+    email: 'test@example.com',
+    password: '123',
+    imc: [],
+  },};
+  const calcularIMCSpy = jest.spyOn(service, 'calcularIMC').mockResolvedValue(resultadoMock);
+
+  const resultado = await controller.seed(usuarioMock);
+
+  expect(calcularIMCSpy).toHaveBeenCalledTimes(100);
+  expect(resultado).toEqual({ message: '100 registros generados con fechas random' });
+
+  // Verificamos que cada llamada tenga userId, peso, altura y fecha
+  for (let i = 0; i < 100; i++) {
+    const args = calcularIMCSpy.mock.calls[i];
+    expect(args[0]).toBe(usuarioMock.id); // userId
+    expect(typeof args[1]).toBe('number'); // peso
+    expect(typeof args[2]).toBe('number'); // altura
+    expect(args[3]).toBeInstanceOf(Date);  // fecha
+  }
+  });
+
+
 });
