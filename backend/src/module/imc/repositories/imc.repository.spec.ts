@@ -1,4 +1,4 @@
-import { ImcPostgresRepository } from './imc.repository';
+import { ImcPostgresRepository } from './imc-postgres.repository';
 import { Repository } from 'typeorm';
 import { Imc } from '../entities/imc.entity';
 import { ImcModel } from '../models/imc.model';

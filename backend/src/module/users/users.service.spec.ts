@@ -2,13 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
-import { UserRepository } from './repositories/user-postgres.repository';
+import { UserPostgresRepository } from './repositories/user-postgres.repository';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let userRepository: jest.Mocked<UserRepository>;
+  let userRepository: jest.Mocked<UserPostgresRepository>;
 
-  const mockUserRepository: Partial<UserRepository> = {
+  const mockUserRepository: Partial<UserPostgresRepository> = {
     createUser: jest.fn(),
     getUsers: jest.fn(),
     findById: jest.fn(),
@@ -21,14 +21,14 @@ describe('UsersService', () => {
       providers: [
         UsersService,
         {
-          provide: UserRepository,
+          provide: 'IUserRepository',
           useValue: mockUserRepository,
         },
       ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
-    userRepository = module.get(UserRepository);
+    userRepository = module.get('IUserRepository');
 
   });
 

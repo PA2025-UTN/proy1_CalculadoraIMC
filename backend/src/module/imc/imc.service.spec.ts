@@ -47,7 +47,7 @@ describe('ImcService', () => {
           },
         },
         {
-          provide: ImcPostgresRepository,
+          provide: 'IImcRepository',
           useValue: imcRepo
         }
       ],

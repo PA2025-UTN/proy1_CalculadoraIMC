@@ -3,9 +3,6 @@ import { Document } from 'mongoose';
 
 @Schema({ collection: 'imc', timestamps: { createdAt: 'fecha', updatedAt: false } })
 export class ImcMongo extends Document {
-  @Prop()
-  _id: string;
-
   @Prop({ required: true, min: 0 })
   peso: number;
 

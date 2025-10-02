@@ -64,7 +64,7 @@ export class ImcMongoRepository implements IImcRepository {
   }
 
   private toModel = (doc: ImcMongo): ImcModel => ({
-    id: doc._id.toString(),
+    id: (doc._id as any).toString(),
     userId: doc.userId,
     peso: doc.peso,
     altura: doc.altura,

@@ -8,20 +8,27 @@ import { UserMongo, UserSchema } from './schemas/user.schema';
 import { UserMongoRepository } from './repositories/user-mongo.repository';
 import { UserPostgresRepository } from './repositories/user-postgres.repository';
 
-const userRepositoryProvider = {
-  provide: 'IUserRepository',
-  useClass: process.env.DB_TYPE === 'mongo' ? UserMongoRepository : UserPostgresRepository,
-};
+// Load environment variables
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const DB_TYPE = process.env.DB_TYPE;
 
 @Module({
   imports: [
-    ...(process.env.DB_TYPE !== 'mongo' ? [TypeOrmModule.forFeature([User])] : []),
-    ...(process.env.DB_TYPE === 'mongo'
+    ...(DB_TYPE === 'mongo' 
       ? [MongooseModule.forFeature([{ name: UserMongo.name, schema: UserSchema }])]
-      : []),
+      : [TypeOrmModule.forFeature([User])]
+    ),
   ],
   controllers: [UsersController],
-  providers: [UsersService, userRepositoryProvider],
+  providers: [
+    UsersService,
+    {
+      provide: 'IUserRepository',
+      useClass: DB_TYPE === 'mongo' ? UserMongoRepository : UserPostgresRepository,
+    },
+  ],
   exports: [UsersService],
 })
 export class UsersModule { }

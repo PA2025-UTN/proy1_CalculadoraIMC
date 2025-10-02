@@ -1,10 +1,10 @@
-import { UserRepository } from './user.repository';
+import { UserPostgresRepository } from './user-postgres.repository';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 
-describe('UserRepository', () => {
-  let repo: UserRepository;
+describe('UserPostgresRepository', () => {
+  let repo: UserPostgresRepository;
   let mockRepo: Partial<Repository<User>>;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('UserRepository', () => {
       findOneBy: jest.fn(),
     };
 
-    repo = new UserRepository(mockRepo as Repository<User>);
+    repo = new UserPostgresRepository(mockRepo as Repository<User>);
   });
 
   it('Debería crear un usuario', async () => {

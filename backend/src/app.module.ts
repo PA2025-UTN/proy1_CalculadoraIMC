@@ -7,42 +7,48 @@ import { UsersModule } from './module/users/users.module';
 import { EstadisticasModule } from './module/estadisticas/estadisticas.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
+// Load environment variables
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const DB_TYPE = process.env.DB_TYPE;
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
 
     // TypeORM solo si DB_TYPE es postgres o mysql
-    ...(process.env.DB_TYPE !== 'mongo'
+    ...(DB_TYPE !== 'mongo'
       ? [
         TypeOrmModule.forRoot({
-          type: process.env.DB_TYPE as 'mysql' | 'postgres',
+          type: DB_TYPE as 'mysql' | 'postgres',
           host:
-            process.env.DB_TYPE === 'postgres'
+            DB_TYPE === 'postgres'
               ? process.env.PG_HOST
               : process.env.MYSQL_HOST,
           port:
-            process.env.DB_TYPE === 'postgres'
+            DB_TYPE === 'postgres'
               ? parseInt(process.env.PG_PORT || '5432', 10)
               : parseInt(process.env.MYSQL_PORT || '3306', 10),
           username:
-            process.env.DB_TYPE === 'postgres'
+            DB_TYPE === 'postgres'
               ? process.env.PG_USERNAME
               : process.env.MYSQL_USERNAME,
           password:
-            process.env.DB_TYPE === 'postgres'
+            DB_TYPE === 'postgres'
               ? process.env.PG_PASSWORD
               : process.env.MYSQL_PASSWORD,
           database: process.env.DB_DATABASE,
           synchronize: true,
           autoLoadEntities: true,
           migrations: [__dirname + '/migrations/*{.ts,.js}'],
-          ssl: process.env.DB_TYPE === 'postgres' ? { rejectUnauthorized: false } : undefined,
+          ssl: DB_TYPE === 'postgres' ? { rejectUnauthorized: false } : undefined,
         }),
       ]
       : []),
 
     // Mongo solo si DB_TYPE === 'mongo'
-    ...(process.env.DB_TYPE === 'mongo'
+    ...(DB_TYPE === 'mongo'
       ? [MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/imc_db')]
       : []),
 
