@@ -5,6 +5,7 @@ import { ImcMongo } from '../schemas/imc.schema';
 import { IImcRepository } from './imc.repository.interface';
 import { ImcModel } from '../models/imc.model';
 import { HistorialQueryDto } from '../dto/historial-query-dto';
+import { ImcMongoMapper } from '../mappers/imc-mongo.mapper';
 
 @Injectable()
 export class ImcMongoRepository implements IImcRepository {
@@ -15,12 +16,12 @@ export class ImcMongoRepository implements IImcRepository {
   async save(imc: ImcModel): Promise<ImcModel> {
     const created = new this.imcModel(imc);
     const saved = await created.save();
-    return this.toModel(saved);
+    return ImcMongoMapper.toModel(saved);
   }
 
   async findByUserId(userId: string): Promise<ImcModel[]> {
     const docs = await this.imcModel.find({ userId }).sort({ fecha: -1 }).exec();
-    return docs.map(this.toModel);
+    return docs.map(ImcMongoMapper.toModel);
   }
 
   async findHistorial(userId: string, filtros: HistorialQueryDto): Promise<ImcModel[]> {
@@ -56,21 +57,11 @@ export class ImcMongoRepository implements IImcRepository {
     }
 
     const docs = await this.imcModel.find(query).sort(sort).exec();
-    return docs.map(this.toModel);
+    return docs.map(ImcMongoMapper.toModel);
   }
 
   create(imc: Partial<ImcModel>): ImcModel {
     return imc as ImcModel;
   }
-
-  private toModel = (doc: ImcMongo): ImcModel => ({
-    id: (doc._id as any).toString(),
-    userId: doc.userId,
-    peso: doc.peso,
-    altura: doc.altura,
-    imc: doc.imc,
-    categoria: doc.categoria,
-    fecha: doc.fecha,
-  });
 }
 
