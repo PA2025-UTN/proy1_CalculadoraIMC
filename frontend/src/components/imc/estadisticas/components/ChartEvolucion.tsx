@@ -1,10 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import DatePicker from "@/components/ui/date-range-picker"
 import { useMemo, useState } from "react"
 import { useEstadisticas } from "../hooks/useEstadisticas"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { Activity } from "lucide-react"
+import { DateRange } from "react-day-picker"
 
 const chartConfig = {
   peso: {
@@ -18,7 +19,13 @@ const chartConfig = {
 } satisfies ChartConfig
 
 const ChartEvolucion = () => {
-  const [timeRange, setTimeRange] = useState<string>("90d")
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
+    // Inicializar con los últimos 90 días por defecto
+    const today = new Date()
+    const from = new Date()
+    from.setDate(today.getDate() - 90)
+    return { from, to: today }
+  })
   const { serieIMC, seriePeso } = useEstadisticas()
 
   const chartData = useMemo(() => {
@@ -37,15 +44,28 @@ const ChartEvolucion = () => {
   const { filteredData, startDateStr, endDateStr } = useMemo(() => {
     if (!chartData.length) return { filteredData: [], startDateStr: "-", endDateStr: "-" }
 
-    const referenceDate = new Date()
-    let daysToSubtract = 90
-    if (timeRange === "30d") daysToSubtract = 30
-    else if (timeRange === "7d") daysToSubtract = 7
+    let filtered = chartData
 
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
+    // Filtrar por rango de fechas si están definidas
+    if (dateRange?.from) {
+      const startDate = new Date(dateRange.from)
+      startDate.setHours(0, 0, 0, 0)
 
-    const filtered = chartData.filter((item) => new Date(item.date) >= startDate)
+      if (dateRange.to) {
+        const endDate = new Date(dateRange.to)
+        endDate.setHours(23, 59, 59, 999)
+
+        filtered = chartData.filter((item) => {
+          const itemDate = new Date(item.date)
+          return itemDate >= startDate && itemDate <= endDate
+        })
+      } else {
+        filtered = chartData.filter((item) => {
+          const itemDate = new Date(item.date)
+          return itemDate >= startDate
+        })
+      }
+    }
 
     // Calcular rango visible
     let startStr = "-"
@@ -67,7 +87,7 @@ const ChartEvolucion = () => {
     }
 
     return { filteredData: filtered, startDateStr: startStr, endDateStr: endStr }
-  }, [chartData, timeRange])
+  }, [chartData, dateRange])
 
   return (
     <Card>
@@ -82,25 +102,10 @@ const ChartEvolucion = () => {
           </CardDescription>
         </div>
         <div className="flex flex-col items-center gap-1">
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger
-              className="w-[160px] cursor-pointer"
-            >
-              <SelectValue placeholder="Últimos 3 meses" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="90d">
-                Últimos 3 meses
-              </SelectItem>
-              <SelectItem value="30d">
-                Últimos 30 días
-              </SelectItem>
-              <SelectItem value="7d">
-                Últimos 7 días
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <p className="text-primary/60 text-sm">{startDateStr} - {endDateStr}</p>
+          <DatePicker
+            value={dateRange}
+            onChange={setDateRange}
+          />
         </div>
       </CardHeader>
       <CardContent className="pl-0">

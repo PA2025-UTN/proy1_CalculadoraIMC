@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import {
   fetchResumen,
   fetchSerieIMC,
@@ -22,6 +23,7 @@ interface UseEstadisticasState {
 }
 
 export function useEstadisticas() {
+  const location = useLocation();
   const [state, setState] = useState<UseEstadisticasState>({
     resumen: null,
     serieIMC: [],
@@ -33,6 +35,7 @@ export function useEstadisticas() {
 
   useEffect(() => {
     async function load() {
+      setState((prev) => ({ ...prev, loading: true, error: null }));
       try {
         const [resumen, serieIMC, seriePeso, categorias] = await Promise.all([
           fetchResumen(),
@@ -59,7 +62,7 @@ export function useEstadisticas() {
     }
 
     load();
-  }, []);
+  }, [location.pathname]);
 
   return state;
 }
