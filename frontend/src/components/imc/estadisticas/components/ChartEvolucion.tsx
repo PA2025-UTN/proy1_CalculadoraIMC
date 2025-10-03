@@ -106,6 +106,7 @@ const ChartEvolucion = () => {
             value={dateRange}
             onChange={setDateRange}
           />
+          <p className="text-primary/60 text-sm">{startDateStr} - {endDateStr}</p>
         </div>
       </CardHeader>
       <CardContent className="pl-0">
