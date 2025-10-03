@@ -29,6 +29,12 @@ describe('EstadisticasPostgresRepository', () => {
     mockRepo = {
       createQueryBuilder: jest.fn().mockReturnValue(qbMock),
       find: jest.fn().mockResolvedValue([{ fecha: new Date(), imc: 22 }] as any),
+      findOne: jest.fn().mockResolvedValue({
+        imc: 23.1,
+        peso: 72.0,
+        altura: 1.76,
+        fecha: new Date('2025-09-29T12:00:00Z'),
+      }),
     };
 
     repo = new EstadisticasPostgresRepository(mockRepo as Repository<Imc>);
@@ -45,7 +51,7 @@ describe('EstadisticasPostgresRepository', () => {
     expect(mockRepo.find).toHaveBeenCalledWith({
       where: { user: { id: 1 } },
       order: { fecha: 'ASC' },
-      select: ['fecha', 'imc'],
+      select: ['id', 'fecha', 'imc'],
     });
   });
 

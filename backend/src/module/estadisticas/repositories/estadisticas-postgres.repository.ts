@@ -12,6 +12,12 @@ export class EstadisticasPostgresRepository implements IEstadisticasRepository {
   ) { }
 
   async getResumen(userId: number) {
+    const ultimoRegistro = await this.repository.findOne({
+      where: { user: { id: userId } },
+      order: { fecha: "DESC" },
+      select: ["id", "imc", "peso", "altura", "fecha"],
+    });
+
     const qb = this.repository
       .createQueryBuilder("imc")
       .select([
@@ -25,37 +31,25 @@ export class EstadisticasPostgresRepository implements IEstadisticasRepository {
         "MIN(imc.altura) as altura_minimo",
         "MAX(imc.altura) as altura_maximo",
         "COUNT(imc.id) as total",
-        `(SELECT i.imc
-          FROM imc i
-          WHERE i."userId" = :userId
-          ORDER BY i.fecha DESC
-          LIMIT 1) as imc_ultimo`,
-        `(SELECT i.peso
-          FROM imc i
-          WHERE i."userId" = :userId
-          ORDER BY i.fecha DESC
-          LIMIT 1) as peso_ultimo`,
-        `(SELECT i.altura
-          FROM imc i
-          WHERE i."userId" = :userId
-          ORDER BY i.fecha DESC
-          LIMIT 1) as altura_ultimo`,
-        `(SELECT i.fecha
-          FROM imc i
-          WHERE i."userId" = :userId
-          ORDER BY i.fecha DESC
-          LIMIT 1) as fecha_ultimo`,
       ])
       .where("imc.userId = :userId", { userId });
 
-    return qb.getRawOne();
+    const resumen = await qb.getRawOne();
+
+    return {
+      ...resumen,
+      imc_ultimo: ultimoRegistro?.imc || null,
+      peso_ultimo: ultimoRegistro?.peso || null,
+      altura_ultimo: ultimoRegistro?.altura || null,
+      fecha_ultimo: ultimoRegistro?.fecha || null,
+    };
   }
 
   async getSerieIMC(userId: number) {
     return this.repository.find({
       where: { user: { id: userId } },
       order: { fecha: "ASC" },
-      select: ["fecha", "imc"],
+      select: ["id", "fecha", "imc"],
     });
   }
 
@@ -63,7 +57,7 @@ export class EstadisticasPostgresRepository implements IEstadisticasRepository {
     return this.repository.find({
       where: { user: { id: userId } },
       order: { fecha: "ASC" },
-      select: ["fecha", "peso"],
+      select: ["id", "fecha", "peso"],
     });
   }
 
