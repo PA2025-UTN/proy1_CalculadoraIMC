@@ -7,9 +7,9 @@ import {
 } from "../types/estadisticas";
 
 const BASE_URL = import.meta.env.VITE_BACK_URL;
-const token = localStorage.getItem("accessToken")
 
 export async function fetchResumen(): Promise<ResumenEstadisticas> {
+  const token = localStorage.getItem("accessToken");
   const { data } = await axios.get(`${BASE_URL}/estadisticas`, {
     headers: {
       Authorization: token,
@@ -35,6 +35,7 @@ export async function fetchResumen(): Promise<ResumenEstadisticas> {
 }
 
 export async function fetchSerieIMC(): Promise<SerieIMC[]> {
+  const token = localStorage.getItem("accessToken");
   const { data } = await axios.get(`${BASE_URL}/estadisticas/serie-imc`, {
     headers: {
       Authorization: token
@@ -44,6 +45,7 @@ export async function fetchSerieIMC(): Promise<SerieIMC[]> {
 }
 
 export async function fetchSeriePeso(): Promise<SeriePeso[]> {
+  const token = localStorage.getItem("accessToken");
   const { data } = await axios.get(`${BASE_URL}/estadisticas/serie-peso`, {
     headers: {
       Authorization: token
@@ -53,6 +55,7 @@ export async function fetchSeriePeso(): Promise<SeriePeso[]> {
 }
 
 export async function fetchDistribucionCategorias(): Promise<DistribucionCategoria[]> {
+  const token = localStorage.getItem("accessToken");
   const { data } = await axios.get(`${BASE_URL}/estadisticas/categorias`, {
     headers: {
       Authorization: token
