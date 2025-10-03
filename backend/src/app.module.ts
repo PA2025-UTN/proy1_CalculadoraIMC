@@ -40,7 +40,7 @@ const DB_TYPE = process.env.DB_TYPE;
           synchronize: true,
           autoLoadEntities: true,
           migrations: [__dirname + '/migrations/*{.ts,.js}'],
-          // ssl: DB_TYPE === 'postgres' ? { rejectUnauthorized: false } : undefined,
+          ssl: DB_TYPE === 'postgres' ? { rejectUnauthorized: false } : undefined,
         }),
       ]
       : []),
