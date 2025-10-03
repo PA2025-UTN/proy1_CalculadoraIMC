@@ -51,7 +51,7 @@ describe('EstadisticasPostgresRepository', () => {
     expect(mockRepo.find).toHaveBeenCalledWith({
       where: { user: { id: 1 } },
       order: { fecha: 'ASC' },
-      select: ['fecha', 'imc'],
+      select: ['id', 'fecha', 'imc'],
     });
   });
 
