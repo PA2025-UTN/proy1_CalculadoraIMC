@@ -32,4 +32,30 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('Debería crear un usuario', async () => {
+    const createUserDto = { usuario: 'testuser', email: 'test@example.com', password: 'password123' };
+    const expectedUser = { id: '1', ...createUserDto };
+    
+    (usersService.createUser as jest.Mock).mockResolvedValue(expectedUser);
+
+    const result = await controller.createUser(createUserDto);
+
+    expect(result).toEqual(expectedUser);
+    expect(usersService.createUser).toHaveBeenCalledWith(createUserDto);
+  });
+
+  it('Debería retornar todos los usuarios', async () => {
+    const expectedUsers = [
+      { id: '1', usuario: 'user1', email: 'user1@test.com', password: 'pass1' },
+      { id: '2', usuario: 'user2', email: 'user2@test.com', password: 'pass2' },
+    ];
+    
+    (usersService.getUsers as jest.Mock).mockResolvedValue(expectedUsers);
+
+    const result = await controller.getUsers();
+
+    expect(result).toEqual(expectedUsers);
+    expect(usersService.getUsers).toHaveBeenCalled();
+  });
 });

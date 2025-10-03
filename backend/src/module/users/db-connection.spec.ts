@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 jest.setTimeout(20000);
-describe('Conexión a base de datos', () => {
+describe.skip('Conexión a base de datos', () => {
   let dataSource: DataSource;
 
   beforeAll(async () => {

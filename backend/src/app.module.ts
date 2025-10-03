@@ -7,7 +7,6 @@ import { UsersModule } from './module/users/users.module';
 import { EstadisticasModule } from './module/estadisticas/estadisticas.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
-// Load environment variables
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,7 +16,6 @@ const DB_TYPE = process.env.DB_TYPE;
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
 
-    // TypeORM solo si DB_TYPE es postgres o mysql
     ...(DB_TYPE !== 'mongo'
       ? [
         TypeOrmModule.forRoot({
@@ -47,7 +45,6 @@ const DB_TYPE = process.env.DB_TYPE;
       ]
       : []),
 
-    // Mongo solo si DB_TYPE === 'mongo'
     ...(DB_TYPE === 'mongo'
       ? [MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/imc_db')]
       : []),

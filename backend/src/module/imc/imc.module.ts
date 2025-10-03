@@ -11,7 +11,6 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { ImcPostgresRepository } from './repositories/imc-postgres.repository';
 import { ImcMongoRepository } from './repositories/imc-mongo.repository';
 
-// Load environment variables
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -28,8 +27,8 @@ const DB_TYPE = process.env.DB_TYPE;
   ],
   controllers: [ImcController],
   providers: [
-    ImcService, 
-    AuthGuard, 
+    ImcService,
+    AuthGuard,
     {
       provide: 'IImcRepository',
       useClass: DB_TYPE === 'mongo' ? ImcMongoRepository : ImcPostgresRepository,

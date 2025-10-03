@@ -10,7 +10,6 @@ import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { EstadisticasMongoRepository } from './repositories/estadisticas-mongo.repository';
 
-// Load environment variables
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -27,7 +26,7 @@ const DB_TYPE = process.env.DB_TYPE;
   ],
   controllers: [EstadisticasController],
   providers: [
-    EstadisticasService, 
+    EstadisticasService,
     {
       provide: 'IEstadisticasRepository',
       useClass: DB_TYPE === 'mongo'

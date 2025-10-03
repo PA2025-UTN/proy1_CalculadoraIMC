@@ -8,7 +8,6 @@ import { UserMongo, UserSchema } from './schemas/user.schema';
 import { UserMongoRepository } from './repositories/user-mongo.repository';
 import { UserPostgresRepository } from './repositories/user-postgres.repository';
 
-// Load environment variables
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -16,7 +15,7 @@ const DB_TYPE = process.env.DB_TYPE;
 
 @Module({
   imports: [
-    ...(DB_TYPE === 'mongo' 
+    ...(DB_TYPE === 'mongo'
       ? [MongooseModule.forFeature([{ name: UserMongo.name, schema: UserSchema }])]
       : [TypeOrmModule.forFeature([User])]
     ),

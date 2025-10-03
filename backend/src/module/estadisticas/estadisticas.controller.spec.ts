@@ -17,10 +17,10 @@ describe('EstadisticasController', () => {
   };
 
   const mockUsuario: IUserActive = {
-    id: 1,
+    id: '1',
     usuario: 'gonzalo',
     email: 'gonzalo@gmail.com',
-  } as IUserActive;
+  };
 
   const mockAuthGuard: CanActivate = {
         canActivate: jest.fn(() => true),

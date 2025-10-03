@@ -34,28 +34,28 @@ describe('UsersService', () => {
 
   it('Debería crear un usuario', async () => {
     const dto: CreateUserDto = { usuario: 'testUser', email: 'test@example.com', password: 'testPassword' };
-    userRepository.createUser.mockResolvedValue({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
+    userRepository.createUser.mockResolvedValue({ id: '1', usuario: 'testUser', email: 'test@example.com', password: 'testPassword' });
 
     const result = await service.createUser(dto);
 
-    expect(result).toEqual({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
+    expect(result).toEqual({ id: '1', usuario: 'testUser', email: 'test@example.com', password: 'testPassword' });
     expect(userRepository.createUser).toHaveBeenCalledWith(dto);
   });
 
   it('Debería encontrar un usuario por email', async () => {
     const email = 'test@example.com';
-    userRepository.findByEmail.mockResolvedValue({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
+    userRepository.findByEmail.mockResolvedValue({ id: '1', usuario: 'testUser', email: 'test@example.com', password: 'testPassword' });
 
     const result = await service.findByEmail(email);
 
-    expect(result).toEqual({ id: 1, usuario: 'testUser', email: 'test@example.com', password: 'testPassword', imc: [] });
+    expect(result).toEqual({ id: '1', usuario: 'testUser', email: 'test@example.com', password: 'testPassword' });
     expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
   });
 
   it('Debería retornar todos los usuarios', async () => {
-    const users: User[] = [
-      { id: 1, usuario: 'user1', email: 'user1@example.com', password: 'pass1', imc: [] },
-      { id: 2, usuario: 'user2', email: 'user2@example.com', password: 'pass2', imc: [] },
+    const users = [
+      { id: '1', usuario: 'user1', email: 'user1@example.com', password: 'pass1' },
+      { id: '2', usuario: 'user2', email: 'user2@example.com', password: 'pass2' },
     ];
     (userRepository.getUsers as jest.Mock).mockResolvedValue(users);
 
@@ -66,18 +66,18 @@ describe('UsersService', () => {
   });
 
   it('Debería encontrar un usuario por ID', async () => {
-    const user: User = { id: 1, usuario: 'user1', email: 'user1@example.com', password: 'pass1', imc: [] };
+    const user = { id: '1', usuario: 'user1', email: 'user1@example.com', password: 'pass1' };
     (userRepository.findById as jest.Mock).mockResolvedValue(user);
 
-    const result = await service.findById(1);
+    const result = await service.findById('1');
 
     expect(result).toEqual(user);
-    expect(userRepository.findById).toHaveBeenCalledWith(1);
+    expect(userRepository.findById).toHaveBeenCalledWith('1');
   });
 
   it('Debería encontrar un usuario por email incluyendo password', async () => {
     const email = 'usuario1@test.com';
-    const usuario: User = { id: 1, usuario: 'user1', email, password: 'pass1', imc: [] };
+    const usuario = { id: '1', usuario: 'user1', email, password: 'pass1' };
     (userRepository.findByEmailWithPassword as jest.Mock).mockResolvedValue(usuario);
 
     const result = await service.findByEmailWithPassword(email);

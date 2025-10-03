@@ -66,4 +66,24 @@ describe('AuthController', () => {
     expect(result).toEqual(tokens);
     expect(mockAuthService.login).toHaveBeenCalledWith(dto);
   });
+
+  it('Debería refrescar el token', async () => {
+    const refreshToken = 'old-refresh-token';
+    const newTokens = {
+      accessToken: 'new-access-token',
+      refreshToken: 'new-refresh-token',
+    };
+
+    const mockRequest = {
+      headers: {
+        'refresh-token': refreshToken
+      }
+    } as any;
+
+    (mockAuthService.refreshToken as jest.Mock).mockResolvedValue(newTokens);
+
+    const result = await controller.refreshToken(mockRequest);
+    expect(result).toEqual(newTokens);
+    expect(mockAuthService.refreshToken).toHaveBeenCalledWith(refreshToken);
+  });
 });
