@@ -10,24 +10,30 @@ import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { EstadisticasMongoRepository } from './repositories/estadisticas-mongo.repository';
 
-const estadisticasRepositoryProvider = {
-  provide: 'IEstadisticasRepository',
-  useClass: process.env.DB_TYPE === 'mongo'
-    ? EstadisticasMongoRepository
-    : EstadisticasPostgresRepository,
-};
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const DB_TYPE = process.env.DB_TYPE;
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
-    ...(process.env.DB_TYPE !== 'mongo' ? [TypeOrmModule.forFeature([Imc])] : []),
-    ...(process.env.DB_TYPE === 'mongo'
+    ...(DB_TYPE === 'mongo'
       ? [MongooseModule.forFeature([{ name: ImcMongo.name, schema: ImcSchema }])]
-      : []),
+      : [TypeOrmModule.forFeature([Imc])]
+    ),
   ],
   controllers: [EstadisticasController],
-  providers: [EstadisticasService, estadisticasRepositoryProvider],
+  providers: [
+    EstadisticasService,
+    {
+      provide: 'IEstadisticasRepository',
+      useClass: DB_TYPE === 'mongo'
+        ? EstadisticasMongoRepository
+        : EstadisticasPostgresRepository,
+    }
+  ],
   exports: [EstadisticasService],
 })
 export class EstadisticasModule { }

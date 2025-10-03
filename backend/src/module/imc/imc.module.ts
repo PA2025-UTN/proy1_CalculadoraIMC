@@ -11,23 +11,29 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { ImcPostgresRepository } from './repositories/imc-postgres.repository';
 import { ImcMongoRepository } from './repositories/imc-mongo.repository';
 
-const imcRepositoryProvider = {
-  provide: 'IImcRepository',
-  useClass:
-    process.env.DB_TYPE === 'mongo' ? ImcMongoRepository : ImcPostgresRepository,
-};
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const DB_TYPE = process.env.DB_TYPE;
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
-    ...(process.env.DB_TYPE !== 'mongo' ? [TypeOrmModule.forFeature([Imc])] : []),
-    ...(process.env.DB_TYPE === 'mongo'
+    ...(DB_TYPE === 'mongo'
       ? [MongooseModule.forFeature([{ name: ImcMongo.name, schema: ImcSchema }])]
-      : []),
+      : [TypeOrmModule.forFeature([Imc])]
+    ),
   ],
   controllers: [ImcController],
-  providers: [ImcService, AuthGuard, imcRepositoryProvider],
+  providers: [
+    ImcService,
+    AuthGuard,
+    {
+      provide: 'IImcRepository',
+      useClass: DB_TYPE === 'mongo' ? ImcMongoRepository : ImcPostgresRepository,
+    }
+  ],
   exports: [ImcService],
 })
 export class ImcModule { }

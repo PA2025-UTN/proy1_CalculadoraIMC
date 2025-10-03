@@ -1,4 +1,4 @@
-import { ImcPostgresRepository } from './imc.repository';
+import { ImcPostgresRepository } from './imc-postgres.repository';
 import { Repository } from 'typeorm';
 import { Imc } from '../entities/imc.entity';
 import { ImcModel } from '../models/imc.model';
@@ -17,7 +17,7 @@ describe('ImcPostgresRepository', () => {
     repo = new ImcPostgresRepository(mockRepo as Repository<Imc>);
   });
 
-  it('should save an ImcModel and return mapped result', async () => {
+  it('deberia guardar un ImcModel y devolver resultado mappeado', async () => {
     const model: ImcModel = {
       id: '1',
       peso: 70,
@@ -45,7 +45,7 @@ describe('ImcPostgresRepository', () => {
     expect(mockRepo.save).toHaveBeenCalledWith(entity);
   });
 
-  it('should find all Imc entities by userId and return mapped models', async () => {
+  it('deberia encontrar todas las Imc entities por userId y devolver models mappeados', async () => {
     const entities: Imc[] = [
       {
         id: 1,
@@ -80,7 +80,7 @@ describe('ImcPostgresRepository', () => {
     });
   });
 
-  it('should apply filters and return historial', async () => {
+  it('deberia aplicar filtros y devolver historial', async () => {
     const filtros: HistorialQueryDto = {
       from: '2025-08-01',
       to: '2025-09-29',
@@ -128,7 +128,7 @@ describe('ImcPostgresRepository', () => {
     }));
   });
 
-  it('should create ImcModel with default fecha if missing', () => {
+  it('deberia crear ImcModel con fecha default si falta', () => {
     const partial = {
       peso: 65,
       altura: 1.70,

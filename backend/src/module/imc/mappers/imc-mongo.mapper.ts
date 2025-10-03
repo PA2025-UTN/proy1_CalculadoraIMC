@@ -4,7 +4,7 @@ import { ImcModel } from '../models/imc.model';
 export class ImcMongoMapper {
   static toModel(doc: ImcMongo): ImcModel {
     return {
-      id: doc._id.toString(),
+      id: (doc._id as any).toString(),
       userId: doc.userId,
       peso: doc.peso,
       altura: doc.altura,

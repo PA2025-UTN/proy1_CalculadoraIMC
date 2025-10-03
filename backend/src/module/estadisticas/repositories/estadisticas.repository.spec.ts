@@ -1,10 +1,10 @@
-import { EstadisticasRepository } from './estadisticas.repository';
+import { EstadisticasPostgresRepository } from './estadisticas-postgres.repository';
 import { Repository } from 'typeorm';
 import { Imc } from '../../imc/entities/imc.entity';
 
 
-describe('EstadisticasRepository', () => {
-  let repo: EstadisticasRepository;
+describe('EstadisticasPostgresRepository', () => {
+  let repo: EstadisticasPostgresRepository;
   let mockRepo: Partial<Repository<Imc>>;
 
   beforeEach(() => {
@@ -31,15 +31,15 @@ describe('EstadisticasRepository', () => {
       find: jest.fn().mockResolvedValue([{ fecha: new Date(), imc: 22 }] as any),
     };
 
-    repo = new EstadisticasRepository(mockRepo as Repository<Imc>);
+    repo = new EstadisticasPostgresRepository(mockRepo as Repository<Imc>);
   });
 
-  it('should return resumen', async () => {
+  it('deberia devolver resumen', async () => {
     const result = await repo.getResumen(1);
     expect(result.imc_promedio).toBe('22.5');
   });
 
-  it('should return serie IMC', async () => {
+  it('deberia devolver serie IMC', async () => {
     const result = await repo.getSerieIMC(1);
     expect(result[0]).toHaveProperty('imc');
     expect(mockRepo.find).toHaveBeenCalledWith({
@@ -49,13 +49,13 @@ describe('EstadisticasRepository', () => {
     });
   });
 
-  it('should return serie Peso', async () => {
+  it('deberia devolver serie Peso', async () => {
     (mockRepo.find as jest.Mock).mockResolvedValue([{ fecha: new Date(), peso: 70 }]);
     const result = await repo.getSeriePeso(1);
     expect(result[0]).toHaveProperty('peso');
   });
 
-  it('should return categorias', async () => {
+  it('deberia devolver categorias', async () => {
     const result = await repo.getDistribucionCategorias(1);
     expect(result[0]).toEqual({ categoria: 'Normal', count: '5' });
   });
