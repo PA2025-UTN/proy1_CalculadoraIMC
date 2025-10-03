@@ -20,7 +20,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:check": "ts-node -r tsconfig-paths/register scripts/check-databases.ts",
     "seed:postgres": "ts-node -r tsconfig-paths/register scripts/seed-postgres-data.ts",
-    "migrate:pg-to-mongo": "ts-node -r tsconfig-paths/register scripts/migrate-postgres-to-mongo.ts",
     "migrate:all": "ts-node -r tsconfig-paths/register scripts/migrate-all-data.ts"
   },
   "dependencies": {
